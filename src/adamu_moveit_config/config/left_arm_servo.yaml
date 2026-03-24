@@ -1,0 +1,38 @@
+# --- 核心频率与输入输出类型 ---
+publish_period: 0.05  # 提高到 100Hz，力控更丝滑
+incoming_command_timeout: 0.25 # 0.1秒收不到 Python 节点的速度就立刻刹车，保命要紧
+command_in_type: "speed_units" # ★ 必须改！我们要发的是 m/s，不是手柄的 unitless
+command_out_type: trajectory_msgs/JointTrajectory
+
+# --- 你的机器人专属配置 ---
+move_group_name: left_arm  # ★ 必须改！你的左臂规划组名字
+is_primary_planning_scene_monitor: true
+
+# --- 机器人框架参数 
+planning_frame: world
+ee_frame_name: left_hand_tcp # ★ 必须改！你左臂末端执行器的真实 link 名字
+robot_link_command_frame: world
+
+# --- 话题通讯路由 (Topic Names) ---
+cartesian_command_in_topic: ~/delta_twist_cmds
+joint_command_in_topic: ~/delta_joint_cmds
+joint_topic: /joint_states
+status_topic: ~/status
+command_out_topic: /left_arm_controller/joint_trajectory # ★ 必须改！你左臂底层控制器的真实话题
+
+# --- 输出内容简化 ---
+publish_joint_positions: true
+publish_joint_velocities: true
+publish_joint_accelerations: false # 关掉加速度输出，很多底层驱动不支持这个，会报错
+
+# --- 奇异点与安全限幅 ---
+lower_singularity_threshold: 50.0
+hard_stop_singularity_threshold: 100.0
+leaving_singularity_threshold_multiplier: 2.0
+joint_limit_margins: [0.1] # 写 1 个值就会自动应用到所有关节
+
+# --- 碰撞检测 ---
+check_collisions: true
+collision_check_rate: 10.0
+self_collision_proximity_threshold: 0.001
+scene_collision_proximity_threshold: 0.001

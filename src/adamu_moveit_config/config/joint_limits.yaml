@@ -1,0 +1,232 @@
+# joint_limits.yaml allows the dynamics properties specified in the URDF to be overwritten or augmented as needed
+
+default_velocity_scaling_factor: 0.5
+default_acceleration_scaling_factor: 0.5
+
+joint_limits:
+  L_index_DIP_joint:
+    has_velocity_limits: true
+    max_velocity: 1.0
+    has_acceleration_limits: false
+    max_acceleration: 0.0
+  L_index_MCP_joint:
+    has_velocity_limits: true
+    max_velocity: 1.0
+    has_acceleration_limits: false
+    max_acceleration: 0.0
+  L_middle_DIP_joint:
+    has_velocity_limits: true
+    max_velocity: 1.0
+    has_acceleration_limits: false
+    max_acceleration: 0.0
+  L_middle_MCP_joint:
+    has_velocity_limits: true
+    max_velocity: 1.0
+    has_acceleration_limits: false
+    max_acceleration: 0.0
+  L_pinky_DIP_joint:
+    has_velocity_limits: true
+    max_velocity: 1.0
+    has_acceleration_limits: false
+    max_acceleration: 0.0
+  L_pinky_MCP_joint:
+    has_velocity_limits: true
+    max_velocity: 1.0
+    has_acceleration_limits: false
+    max_acceleration: 0.0
+  L_ring_DIP_joint:
+    has_velocity_limits: true
+    max_velocity: 1.0
+    has_acceleration_limits: false
+    max_acceleration: 0.0
+  L_ring_MCP_joint:
+    has_velocity_limits: true
+    max_velocity: 1.0
+    has_acceleration_limits: false
+    max_acceleration: 0.0
+  L_thumb_DIP_joint:
+    has_velocity_limits: true
+    max_velocity: 1.0
+    has_acceleration_limits: false
+    max_acceleration: 0.0
+  L_thumb_MCP_joint1:
+    has_velocity_limits: true
+    max_velocity: 1.0
+    has_acceleration_limits: false
+    max_acceleration: 0.0
+  L_thumb_MCP_joint2:
+    has_velocity_limits: true
+    max_velocity: 1.0
+    has_acceleration_limits: false
+    max_acceleration: 0.0
+  L_thumb_PIP_joint:
+    has_velocity_limits: true
+    max_velocity: 1.0
+    has_acceleration_limits: false
+    max_acceleration: 0.0
+  R_index_DIP_joint:
+    has_velocity_limits: true
+    max_velocity: 1.0
+    has_acceleration_limits: false
+    max_acceleration: 0.0
+  R_index_MCP_joint:
+    has_velocity_limits: true
+    max_velocity: 1.0
+    has_acceleration_limits: false
+    max_acceleration: 0.0
+  R_middle_DIP_joint:
+    has_velocity_limits: true
+    max_velocity: 1.0
+    has_acceleration_limits: false
+    max_acceleration: 0.0
+  R_middle_MCP_joint:
+    has_velocity_limits: true
+    max_velocity: 1.0
+    has_acceleration_limits: false
+    max_acceleration: 0.0
+  R_pinky_DIP_joint:
+    has_velocity_limits: true
+    max_velocity: 1.0
+    has_acceleration_limits: false
+    max_acceleration: 0.0
+  R_pinky_MCP_joint:
+    has_velocity_limits: true
+    max_velocity: 1.0
+    has_acceleration_limits: false
+    max_acceleration: 0.0
+  R_ring_DIP_joint:
+    has_velocity_limits: true
+    max_velocity: 1.0
+    has_acceleration_limits: false
+    max_acceleration: 0.0
+  R_ring_MCP_joint:
+    has_velocity_limits: true
+    max_velocity: 1.0
+    has_acceleration_limits: false
+    max_acceleration: 0.0
+  R_thumb_DIP_joint:
+    has_velocity_limits: true
+    max_velocity: 1.0
+    has_acceleration_limits: false
+    max_acceleration: 0.0
+  R_thumb_MCP_joint1:
+    has_velocity_limits: true
+    max_velocity: 1.0
+    has_acceleration_limits: false
+    max_acceleration: 0.0
+  R_thumb_MCP_joint2:
+    has_velocity_limits: true
+    max_velocity: 1.0
+    has_acceleration_limits: false
+    max_acceleration: 0.0
+  R_thumb_PIP_joint:
+    has_velocity_limits: true
+    max_velocity: 1.0
+    has_acceleration_limits: false
+    max_acceleration: 0.0
+  elbow_Left:
+    has_velocity_limits: true
+    max_velocity: 8.0
+    has_acceleration_limits: false
+    max_acceleration: 0.0
+  elbow_Right:
+    has_velocity_limits: true
+    max_velocity: 8.0
+    has_acceleration_limits: false
+    max_acceleration: 0.0
+  neckPitch:
+    has_velocity_limits: true
+    max_velocity: 5.0
+    has_acceleration_limits: false
+    max_acceleration: 0.0
+  neckYaw:
+    has_velocity_limits: true
+    max_velocity: 5.0
+    has_acceleration_limits: false
+    max_acceleration: 0.0
+  shoulderPitch_Left:
+    has_velocity_limits: true
+    max_velocity: 8.0
+    has_acceleration_limits: false
+    max_acceleration: 0.0
+  shoulderPitch_Right:
+    has_velocity_limits: true
+    max_velocity: 8.0
+    has_acceleration_limits: false
+    max_acceleration: 0.0
+  shoulderRoll_Left:
+    has_velocity_limits: true
+    max_velocity: 8.0
+    has_acceleration_limits: false
+    max_acceleration: 0.0
+  shoulderRoll_Right:
+    has_velocity_limits: true
+    max_velocity: 8.0
+    has_acceleration_limits: false
+    max_acceleration: 0.0
+  shoulderYaw_Left:
+    has_velocity_limits: true
+    max_velocity: 8.0
+    has_acceleration_limits: false
+    max_acceleration: 0.0
+  shoulderYaw_Right:
+    has_velocity_limits: true
+    max_velocity: 8.0
+    has_acceleration_limits: false
+    max_acceleration: 0.0
+  waistPitch:
+    has_velocity_limits: true
+    max_velocity: 8.0
+    has_acceleration_limits: false
+    max_acceleration: 0.0
+  waistRoll:
+    has_velocity_limits: true
+    max_velocity: 8.0
+    has_acceleration_limits: false
+    max_acceleration: 0.0
+  waistYaw:
+    has_velocity_limits: true
+    max_velocity: 8.0
+    has_acceleration_limits: false
+    max_acceleration: 0.0
+  wristPitch_Left:
+    has_velocity_limits: true
+    max_velocity: 5.0
+    has_acceleration_limits: false
+    max_acceleration: 0.0
+  wristPitch_Right:
+    has_velocity_limits: true
+    max_velocity: 5.0
+    has_acceleration_limits: false
+    max_acceleration: 0.0
+  wristRoll_Left:
+    has_velocity_limits: true
+    max_velocity: 5.0
+    has_acceleration_limits: false
+    max_acceleration: 0.0
+  wristRoll_Right:
+    has_velocity_limits: true
+    max_velocity: 5.0
+    has_acceleration_limits: false
+    max_acceleration: 0.0
+  wristYaw_Left:
+    has_velocity_limits: true
+    max_velocity: 5.0
+    has_acceleration_limits: false
+    max_acceleration: 0.0
+  wristYaw_Right:
+    has_velocity_limits: true
+    max_velocity: 5.0
+    has_acceleration_limits: false
+    max_acceleration: 0.0
+  neckPitch:
+    has_velocity_limits: true
+    max_velocity: 5.0
+    has_acceleration_limits: false
+    max_acceleration: 0.0
+  neckYaw:
+    has_velocity_limits: true
+    max_velocity: 5.0
+    has_acceleration_limits: false
+    max_acceleration: 0.0
+  

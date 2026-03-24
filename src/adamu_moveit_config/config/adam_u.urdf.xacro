@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="adam_u">
+    <xacro:arg name="initial_positions_file" default="initial_positions.yaml" />
+
+    <!-- Import adam_u urdf file -->
+    <xacro:include filename="$(find adamu_description)/urdf/adam_u.urdf" />
+
+    <!-- Import control_xacro -->
+    <xacro:include filename="adam_u.ros2_control.xacro" />
+
+
+    <xacro:adam_u_ros2_control name="MujocoSystem" initial_positions_file="$(arg initial_positions_file)"/>
+
+</robot>

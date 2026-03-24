@@ -1,0 +1,14 @@
+pilz_industrial_motion_planner:
+  plan_request_params:
+    planning_attempts: 1
+    planning_pipeline: pilz_industrial_motion_planner
+    max_velocity_scaling_factor: 0.1       # 默认安全速度
+    max_acceleration_scaling_factor: 0.1   # 默认安全加速度
+  # Pilz 默认支持的三个核心规划器
+  planner_configs:
+    PTP:
+      type: geometric::PTP
+    LIN:
+      type: geometric::LIN
+    CIRC:
+      type: geometric::CIRC

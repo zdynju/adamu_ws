@@ -1,0 +1,24 @@
+# ROS 2 编译和日志文件夹 (必须忽略)
+build/
+install/
+log/
+
+# Python 虚拟环境 (绝对不能传，非常大)
+yolo_env/
+
+# IDE 和工具配置
+.vscode/
+.cursor/
+.claude/
+
+# 临时文件夹
+temp/
+
+# 仿真日志和大型数据文件 (如果你不想传模型权重和日志的话)
+*.npz
+*.TXT
+*.png
+
+
+# Python 缓存
+__pycache__/

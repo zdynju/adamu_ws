@@ -1,0 +1,25 @@
+moveit_setup_assistant_config:
+  urdf:
+    package: adamu_description
+    relative_path: urdf/adam_u.urdf
+  srdf:
+    relative_path: config/adam_u.srdf
+  package_settings:
+    author_name: zdy
+    author_email: 2939669401@qq.com
+    generated_timestamp: 1772450974
+  control_xacro:
+    command:
+      - position
+    state:
+      - position
+      - velocity
+  modified_urdf:
+    xacros:
+      - control_xacro
+  control_xacro:
+    command:
+      - position
+    state:
+      - position
+      - velocity

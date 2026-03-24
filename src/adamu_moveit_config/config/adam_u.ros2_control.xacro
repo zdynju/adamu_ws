@@ -1,0 +1,486 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <xacro:macro name="adam_u_ros2_control" params="name initial_positions_file">
+        <xacro:property name="initial_positions" value="${xacro.load_yaml(initial_positions_file)['initial_positions']}"/>
+
+        <ros2_control name="${name}" type="system">
+            <hardware>
+                <plugin>mujoco_ros2_control/MujocoSystemInterface</plugin>
+                <param name="mujoco_model">$(find adamu_description)/mujoco/scene_adam_u.xml</param>
+            </hardware>
+
+            <sensor name="overhead_cam">
+              <param name="frame_name">overhead_cam_frame</param>
+              <param name="info_topic">/overhead_cam/color/camera_info</param>
+              <param name="image_topic">/overhead_cam/color/image_raw</param>
+              <param name="depth_topic">/overhead_cam/aligned_depth_to_color/image_raw</param>
+            </sensor>
+            <sensor name="left_fts_sensor">
+              <param name="mujoco_type">fts</param>
+              <!-- There is no requirement for the mujoco_sensor_name to match the ros2_control sensor name -->
+              <param name="mujoco_sensor_name">left_fts_sensor</param>
+              <!-- Default value of force_mjcf_suffix is '_force' -->
+              <param name="force_mjcf_suffix">_force</param>
+              <!-- Default value of torque_mjcf_suffix is '_torque' -->
+              <param name="torque_mjcf_suffix">_torque</param>
+              <state_interface name="force.x"/>
+              <state_interface name="force.y"/>
+              <state_interface name="force.z"/>
+              <state_interface name="torque.x"/>
+              <state_interface name="torque.y"/>
+              <state_interface name="torque.z"/>
+            </sensor>
+            <sensor name="right_fts_sensor">
+              <param name="mujoco_type">fts</param>
+              <!-- There is no requirement for the mujoco_sensor_name to match the ros2_control sensor name -->
+              <param name="mujoco_sensor_name">right_fts_sensor</param>
+              <!-- Default value of force_mjcf_suffix is '_force' -->
+              <param name="force_mjcf_suffix">_force</param>
+              <!-- Default value of torque_mjcf_suffix is '_torque' -->
+              <param name="torque_mjcf_suffix">_torque</param>
+              <state_interface name="force.x"/>
+              <state_interface name="force.y"/>
+              <state_interface name="force.z"/>
+              <state_interface name="torque.x"/>
+              <state_interface name="torque.y"/>
+              <state_interface name="torque.z"/>
+            </sensor>
+            <sensor name="L_thumb_pad_sensor">
+              <param name="mujoco_type">fts</param>
+              <param name="mujoco_sensor_name">L_thumb_pad</param>
+              <param name="force_mjcf_suffix">_force</param>
+              <param name="torque_mjcf_suffix">_torque</param>
+              <state_interface name="force.x"/>
+              <state_interface name="force.y"/>
+              <state_interface name="force.z"/>
+              <state_interface name="torque.x"/>
+              <state_interface name="torque.y"/>
+              <state_interface name="torque.z"/>
+            </sensor>
+
+            <sensor name="L_index_pad_sensor">
+              <param name="mujoco_type">fts</param>
+              <param name="mujoco_sensor_name">L_index_pad</param>
+              <param name="force_mjcf_suffix">_force</param>
+              <param name="torque_mjcf_suffix">_torque</param>
+              <state_interface name="force.x"/>
+              <state_interface name="force.y"/>
+              <state_interface name="force.z"/>
+              <state_interface name="torque.x"/>
+              <state_interface name="torque.y"/>
+              <state_interface name="torque.z"/>
+            </sensor>
+
+            <sensor name="L_middle_pad_sensor">
+              <param name="mujoco_type">fts</param>
+              <param name="mujoco_sensor_name">L_middle_pad</param>
+              <param name="force_mjcf_suffix">_force</param>
+              <param name="torque_mjcf_suffix">_torque</param>
+              <state_interface name="force.x"/>
+              <state_interface name="force.y"/>
+              <state_interface name="force.z"/>
+              <state_interface name="torque.x"/>
+              <state_interface name="torque.y"/>
+              <state_interface name="torque.z"/>
+            </sensor>
+
+            <sensor name="L_ring_pad_sensor">
+              <param name="mujoco_type">fts</param>
+              <param name="mujoco_sensor_name">L_ring_pad</param>
+              <param name="force_mjcf_suffix">_force</param>
+              <param name="torque_mjcf_suffix">_torque</param>
+              <state_interface name="force.x"/>
+              <state_interface name="force.y"/>
+              <state_interface name="force.z"/>
+              <state_interface name="torque.x"/>
+              <state_interface name="torque.y"/>
+              <state_interface name="torque.z"/>
+            </sensor>
+
+            <sensor name="L_pinky_pad_sensor">
+              <param name="mujoco_type">fts</param>
+              <param name="mujoco_sensor_name">L_pinky_pad</param>
+              <param name="force_mjcf_suffix">_force</param>
+              <param name="torque_mjcf_suffix">_torque</param>
+              <state_interface name="force.x"/>
+              <state_interface name="force.y"/>
+              <state_interface name="force.z"/>
+              <state_interface name="torque.x"/>
+              <state_interface name="torque.y"/>
+              <state_interface name="torque.z"/>
+            </sensor>
+
+            <sensor name="R_thumb_pad_sensor">
+              <param name="mujoco_type">fts</param>
+              <param name="mujoco_sensor_name">R_thumb_pad</param>
+              <param name="force_mjcf_suffix">_force</param>
+              <param name="torque_mjcf_suffix">_torque</param>
+              <state_interface name="force.x"/>
+              <state_interface name="force.y"/>
+              <state_interface name="force.z"/>
+              <state_interface name="torque.x"/>
+              <state_interface name="torque.y"/>
+              <state_interface name="torque.z"/>
+            </sensor>
+
+            <sensor name="R_index_pad_sensor">
+              <param name="mujoco_type">fts</param>
+              <param name="mujoco_sensor_name">R_index_pad</param>
+              <param name="force_mjcf_suffix">_force</param>
+              <param name="torque_mjcf_suffix">_torque</param>
+              <state_interface name="force.x"/>
+              <state_interface name="force.y"/>
+              <state_interface name="force.z"/>
+              <state_interface name="torque.x"/>
+              <state_interface name="torque.y"/>
+              <state_interface name="torque.z"/>
+            </sensor>
+
+            <sensor name="R_middle_pad_sensor">
+              <param name="mujoco_type">fts</param>
+              <param name="mujoco_sensor_name">R_middle_pad</param>
+              <param name="force_mjcf_suffix">_force</param>
+              <param name="torque_mjcf_suffix">_torque</param>
+              <state_interface name="force.x"/>
+              <state_interface name="force.y"/>
+              <state_interface name="force.z"/>
+              <state_interface name="torque.x"/>
+              <state_interface name="torque.y"/>
+              <state_interface name="torque.z"/>
+            </sensor>
+
+            <sensor name="R_ring_pad_sensor">
+              <param name="mujoco_type">fts</param>
+              <param name="mujoco_sensor_name">R_ring_pad</param>
+              <param name="force_mjcf_suffix">_force</param>
+              <param name="torque_mjcf_suffix">_torque</param>
+              <state_interface name="force.x"/>
+              <state_interface name="force.y"/>
+              <state_interface name="force.z"/>
+              <state_interface name="torque.x"/>
+              <state_interface name="torque.y"/>
+              <state_interface name="torque.z"/>
+            </sensor>
+
+            <sensor name="R_pinky_pad_sensor">
+              <param name="mujoco_type">fts</param>
+              <param name="mujoco_sensor_name">R_pinky_pad</param>
+              <param name="force_mjcf_suffix">_force</param>
+              <param name="torque_mjcf_suffix">_torque</param>
+              <state_interface name="force.x"/>
+              <state_interface name="force.y"/>
+              <state_interface name="force.z"/>
+              <state_interface name="torque.x"/>
+              <state_interface name="torque.y"/>
+              <state_interface name="torque.z"/>
+            </sensor>
+            <joint name="shoulderPitch_Left">
+                <command_interface name="position"/>
+                <state_interface name="position">
+                  <param name="initial_value">${initial_positions['shoulderPitch_Left']}</param>
+                </state_interface>
+                <state_interface name="velocity"/>
+            </joint>
+            <joint name="shoulderRoll_Left">
+                <command_interface name="position"/>
+                <state_interface name="position">
+                  <param name="initial_value">${initial_positions['shoulderRoll_Left']}</param>
+                </state_interface>
+                <state_interface name="velocity"/>
+            </joint>
+            <joint name="shoulderYaw_Left">
+                <command_interface name="position"/>
+                <state_interface name="position">
+                  <param name="initial_value">${initial_positions['shoulderYaw_Left']}</param>
+                </state_interface>
+                <state_interface name="velocity"/>
+            </joint>
+            <joint name="elbow_Left">
+                <command_interface name="position"/>
+                <state_interface name="position">
+                  <param name="initial_value">${initial_positions['elbow_Left']}</param>
+                </state_interface>
+                <state_interface name="velocity"/>
+            </joint>
+            <joint name="wristYaw_Left">
+                <command_interface name="position"/>
+                <state_interface name="position">
+                  <param name="initial_value">${initial_positions['wristYaw_Left']}</param>
+                </state_interface>
+                <state_interface name="velocity"/>
+            </joint>
+            <joint name="wristPitch_Left">
+                <command_interface name="position"/>
+                <state_interface name="position">
+                  <param name="initial_value">${initial_positions['wristPitch_Left']}</param>
+                </state_interface>
+                <state_interface name="velocity"/>
+            </joint>
+            <joint name="wristRoll_Left">
+                <command_interface name="position"/>
+                <state_interface name="position">
+                  <param name="initial_value">${initial_positions['wristRoll_Left']}</param>
+                </state_interface>
+                <state_interface name="velocity"/>
+            </joint>
+            <joint name="shoulderPitch_Right">
+                <command_interface name="position"/>
+                <state_interface name="position">
+                  <param name="initial_value">${initial_positions['shoulderPitch_Right']}</param>
+                </state_interface>
+                <state_interface name="velocity"/>
+            </joint>
+            <joint name="shoulderRoll_Right">
+                <command_interface name="position"/>
+                <state_interface name="position">
+                  <param name="initial_value">${initial_positions['shoulderRoll_Right']}</param>
+                </state_interface>
+                <state_interface name="velocity"/>
+            </joint>
+            <joint name="shoulderYaw_Right">
+                <command_interface name="position"/>
+                <state_interface name="position">
+                  <param name="initial_value">${initial_positions['shoulderYaw_Right']}</param>
+                </state_interface>
+                <state_interface name="velocity"/>
+            </joint>
+            <joint name="elbow_Right">
+                <command_interface name="position"/>
+                <state_interface name="position">
+                  <param name="initial_value">${initial_positions['elbow_Right']}</param>
+                </state_interface>
+                <state_interface name="velocity"/>
+            </joint>
+            <joint name="wristYaw_Right">
+                <command_interface name="position"/>
+                <state_interface name="position">
+                  <param name="initial_value">${initial_positions['wristYaw_Right']}</param>
+                </state_interface>
+                <state_interface name="velocity"/>
+            </joint>
+            <joint name="wristPitch_Right">
+                <command_interface name="position"/>
+                <state_interface name="position">
+                  <param name="initial_value">${initial_positions['wristPitch_Right']}</param>
+                </state_interface>
+                <state_interface name="velocity"/>
+            </joint>
+            <joint name="wristRoll_Right">
+                <command_interface name="position"/>
+                <state_interface name="position">
+                  <param name="initial_value">${initial_positions['wristRoll_Right']}</param>
+                </state_interface>
+                <state_interface name="velocity"/>
+            </joint>
+            <joint name="L_index_MCP_joint">
+                <command_interface name="position"/>
+                <state_interface name="position">
+                  <param name="initial_value">${initial_positions['L_index_MCP_joint']}</param>
+                </state_interface>
+                <state_interface name="velocity"/>
+            </joint>
+            <joint name="L_index_DIP_joint">
+                <command_interface name="position"/>
+                <state_interface name="position">
+                  <param name="initial_value">${initial_positions['L_index_DIP_joint']}</param>
+                </state_interface>
+                <state_interface name="velocity"/>
+            </joint>
+            <joint name="L_middle_MCP_joint">
+                <command_interface name="position"/>
+                <state_interface name="position">
+                  <param name="initial_value">${initial_positions['L_middle_MCP_joint']}</param>
+                </state_interface>
+                <state_interface name="velocity"/>
+            </joint>
+            <joint name="L_middle_DIP_joint">
+                <command_interface name="position"/>
+                <state_interface name="position">
+                  <param name="initial_value">${initial_positions['L_middle_DIP_joint']}</param>
+                </state_interface>
+                <state_interface name="velocity"/>
+            </joint>
+            <joint name="L_pinky_MCP_joint">
+                <command_interface name="position"/>
+                <state_interface name="position">
+                  <param name="initial_value">${initial_positions['L_pinky_MCP_joint']}</param>
+                </state_interface>
+                <state_interface name="velocity"/>
+            </joint>
+            <joint name="L_pinky_DIP_joint">
+                <command_interface name="position"/>
+                <state_interface name="position">
+                  <param name="initial_value">${initial_positions['L_pinky_DIP_joint']}</param>
+                </state_interface>
+                <state_interface name="velocity"/>
+            </joint>
+            <joint name="L_ring_MCP_joint">
+                <command_interface name="position"/>
+                <state_interface name="position">
+                  <param name="initial_value">${initial_positions['L_ring_MCP_joint']}</param>
+                </state_interface>
+                <state_interface name="velocity"/>
+            </joint>
+            <joint name="L_ring_DIP_joint">
+                <command_interface name="position"/>
+                <state_interface name="position">
+                  <param name="initial_value">${initial_positions['L_ring_DIP_joint']}</param>
+                </state_interface>
+                <state_interface name="velocity"/>
+            </joint>
+            <joint name="L_thumb_MCP_joint1">
+                <command_interface name="position"/>
+                <state_interface name="position">
+                  <param name="initial_value">${initial_positions['L_thumb_MCP_joint1']}</param>
+                </state_interface>
+                <state_interface name="velocity"/>
+            </joint>
+            <joint name="L_thumb_MCP_joint2">
+                <command_interface name="position"/>
+                <state_interface name="position">
+                  <param name="initial_value">${initial_positions['L_thumb_MCP_joint2']}</param>
+                </state_interface>
+                <state_interface name="velocity"/>
+            </joint>
+            <joint name="L_thumb_PIP_joint">
+                <command_interface name="position"/>
+                <state_interface name="position">
+                  <param name="initial_value">${initial_positions['L_thumb_PIP_joint']}</param>
+                </state_interface>
+                <state_interface name="velocity"/>
+            </joint>
+            <joint name="L_thumb_DIP_joint">
+                <command_interface name="position"/>
+                <state_interface name="position">
+                  <param name="initial_value">${initial_positions['L_thumb_DIP_joint']}</param>
+                </state_interface>
+                <state_interface name="velocity"/>
+            </joint>
+            <joint name="R_index_MCP_joint">
+                <command_interface name="position"/>
+                <state_interface name="position">
+                  <param name="initial_value">${initial_positions['R_index_MCP_joint']}</param>
+                </state_interface>
+                <state_interface name="velocity"/>
+            </joint>
+            <joint name="R_index_DIP_joint">
+                <command_interface name="position"/>
+                <state_interface name="position">
+                  <param name="initial_value">${initial_positions['R_index_DIP_joint']}</param>
+                </state_interface>
+                <state_interface name="velocity"/>
+            </joint>
+            <joint name="R_middle_MCP_joint">
+                <command_interface name="position"/>
+                <state_interface name="position">
+                  <param name="initial_value">${initial_positions['R_middle_MCP_joint']}</param>
+                </state_interface>
+                <state_interface name="velocity"/>
+            </joint>
+            <joint name="R_middle_DIP_joint">
+                <command_interface name="position"/>
+                <state_interface name="position">
+                  <param name="initial_value">${initial_positions['R_middle_DIP_joint']}</param>
+                </state_interface>
+                <state_interface name="velocity"/>
+            </joint>
+            <joint name="R_pinky_MCP_joint">
+                <command_interface name="position"/>
+                <state_interface name="position">
+                  <param name="initial_value">${initial_positions['R_pinky_MCP_joint']}</param>
+                </state_interface>
+                <state_interface name="velocity"/>
+            </joint>
+            <joint name="R_pinky_DIP_joint">
+                <command_interface name="position"/>
+                <state_interface name="position">
+                  <param name="initial_value">${initial_positions['R_pinky_DIP_joint']}</param>
+                </state_interface>
+                <state_interface name="velocity"/>
+            </joint>
+            <joint name="R_ring_MCP_joint">
+                <command_interface name="position"/>
+                <state_interface name="position">
+                  <param name="initial_value">${initial_positions['R_ring_MCP_joint']}</param>
+                </state_interface>
+                <state_interface name="velocity"/>
+            </joint>
+            <joint name="R_ring_DIP_joint">
+                <command_interface name="position"/>
+                <state_interface name="position">
+                  <param name="initial_value">${initial_positions['R_ring_DIP_joint']}</param>
+                </state_interface>
+                <state_interface name="velocity"/>
+            </joint>
+            <joint name="R_thumb_MCP_joint1">
+                <command_interface name="position"/>
+                <state_interface name="position">
+                  <param name="initial_value">${initial_positions['R_thumb_MCP_joint1']}</param>
+                </state_interface>
+                <state_interface name="velocity"/>
+            </joint>
+            <joint name="R_thumb_MCP_joint2">
+                <command_interface name="position"/>
+                <state_interface name="position">
+                  <param name="initial_value">${initial_positions['R_thumb_MCP_joint2']}</param>
+                </state_interface>
+                <state_interface name="velocity"/>
+            </joint>
+            <joint name="R_thumb_PIP_joint">
+                <command_interface name="position"/>
+                <state_interface name="position">
+                  <param name="initial_value">${initial_positions['R_thumb_PIP_joint']}</param>
+                </state_interface>
+                <state_interface name="velocity"/>
+            </joint>
+            <joint name="R_thumb_DIP_joint">
+                <command_interface name="position"/>
+                <state_interface name="position">
+                  <param name="initial_value">${initial_positions['R_thumb_DIP_joint']}</param>
+                </state_interface>
+                <state_interface name="velocity"/>
+            </joint>
+            <joint name="waistRoll">
+                <command_interface name="position"/>
+                <state_interface name="position">
+                  <param name="initial_value">${initial_positions['waistRoll']}</param>
+                </state_interface>
+                <state_interface name="velocity"/>
+            </joint>
+            <joint name="waistPitch">
+                <command_interface name="position"/>
+                <state_interface name="position">
+                  <param name="initial_value">${initial_positions['waistPitch']}</param>
+                </state_interface>
+                <state_interface name="velocity"/>
+            </joint>
+            <joint name="waistYaw">
+                <command_interface name="position"/>
+                <state_interface name="position">
+                  <param name="initial_value">${initial_positions['waistYaw']}</param>
+                </state_interface>
+                <state_interface name="velocity"/>
+            </joint>
+            <joint name="neckYaw">
+                <command_interface name="position"/>
+                <state_interface name="position">
+                  <param name="initial_value">${initial_positions['neckYaw']}</param>
+                </state_interface>
+                <state_interface name="velocity"/>
+            </joint>
+            <joint name="neckPitch">
+                <command_interface name="position"/>
+                <state_interface name="position">
+                  <param name="initial_value">${initial_positions['neckPitch']}</param>
+                </state_interface>
+                <state_interface name="velocity"/>
+            </joint>
+            
+            <joint name="conveyor_linear">
+                <command_interface name="velocity"/>
+                <state_interface name="position"/>
+                <state_interface name="velocity"/>
+            </joint>
+        </ros2_control>
+    </xacro:macro>
+</robot>

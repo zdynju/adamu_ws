@@ -1,0 +1,68 @@
+head:
+  kinematics_solver: kdl_kinematics_plugin/KDLKinematicsPlugin
+  kinematics_solver_search_resolution: 0.0050000000000000001
+  kinematics_solver_timeout: 0.0050000000000000001
+left_arm:
+  kinematics_solver: pick_ik/PickIkPlugin
+  kinematics_solver_timeout: 0.05
+  kinematics_solver_attempts: 3
+  mode: global
+  position_scale: 1.0
+  rotation_scale: 0.5
+  position_threshold: 0.001
+  orientation_threshold: 0.01
+  cost_threshold: 0.001
+  minimal_displacement_weight: 0.001
+  center_joints_weight: 0.005
+  gd_step_size: 0.0001
+  tip_frames:
+    - left_hand_tcp
+right_arm:
+  kinematics_solver: pick_ik/PickIkPlugin
+  kinematics_solver_timeout: 0.05
+  kinematics_solver_attempts: 3
+  mode: global
+  position_scale: 1.0
+  rotation_scale: 0.5
+  position_threshold: 0.001
+  orientation_threshold: 0.01
+  cost_threshold: 0.001
+  minimal_displacement_weight: 0.001
+  center_joints_weight: 0.005
+  gd_step_size: 0.0001
+  tip_frames:
+    - right_hand_tcp
+  # # KDL 求解器配置
+  # kinematics_solver: kdl_kinematics_plugin/KDLKinematicsPlugin
+  # kinematics_solver_search_resolution: 0.005
+  # kinematics_solver_timeout: 0.05
+  # tip_frames:
+  #   - wristRollRight
+# # left_arm:
+#   kinematics_solver: bio_ik/BioIKKinematicsPlugin
+#   kinematics_solver_timeout: 0.05
+#   kinematics_solver_attempts: 3
+#   tip_frames:
+#     - wristRollLeft
+
+# right_arm:
+#   kinematics_solver: bio_ik/BioIKKinematicsPlugin
+#   kinematics_solver_timeout: 0.05
+#   kinematics_solver_attempts: 3
+#   tip_frames:
+#     - wristRollRight
+waist:
+  kinematics_solver: kdl_kinematics_plugin/KDLKinematicsPlugin
+  kinematics_solver_search_resolution: 0.0050000000000000001
+  kinematics_solver_timeout: 0.0050000000000000001
+
+# dual_arm:
+#   kinematics_solver: bio_ik/BioIKKinematicsPlugin
+#   kinematics_solver_search_resolution: 0.005
+#   kinematics_solver_timeout: 0.05
+#   mode: gd_c  # Gradient Descent (梯度下降) + 进化算法，速度和成功率的完美平衡
+#   position_only_ik: false
+#   dtime: 0.005
+#   tip_frames:                  # ← 关键：显式指定两个末端
+#     - wristRollLeft
+#     - wristRollRight
