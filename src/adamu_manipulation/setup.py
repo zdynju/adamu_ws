@@ -40,7 +40,8 @@ setup(
             'fts = adamu_manipulation.fts:main',
             'hand = adamu_manipulation.hand_controller:main',
             'hand_test = adamu_manipulation.hand_test:main',
-            'simple_hand = adamu_manipulation.simple_hand_controller:main'
+            'simple_hand = adamu_manipulation.simple_hand_controller:main',
+            'edge_top_grasp_demo = adamu_manipulation.edge_top_grasp_demo:main',
         ],
     },
 )

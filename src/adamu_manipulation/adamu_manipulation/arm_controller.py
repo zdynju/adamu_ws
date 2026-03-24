@@ -22,7 +22,13 @@ def wrap_future(rclpy_future):
     aio_future = loop.create_future()
 
     def rclpy_done_callback(f):
-        loop.call_soon_threadsafe(aio_future.set_result, f.result())
+        try:
+            result = f.result()
+            if not aio_future.done():
+                loop.call_soon_threadsafe(aio_future.set_result, result)
+        except Exception as exc:  # noqa: BLE001
+            if not aio_future.done():
+                loop.call_soon_threadsafe(aio_future.set_exception, exc)
 
     rclpy_future.add_done_callback(rclpy_done_callback)
     return aio_future
@@ -105,6 +111,8 @@ class AdamuDualArmController(Node):
                 continue
             curr_positions = list(curr.position)
             if prev_positions is not None:
+                if not curr_positions or not prev_positions:
+                    continue
                 diff = max(abs(a - b) for a, b in zip(prev_positions, curr_positions))
                 if diff < tol:
                     self.get_logger().info(
@@ -216,6 +224,11 @@ class AdamuDualArmController(Node):
         self.get_logger().info(f'=== 单臂关节空间规划 [{group_name}] ===')
         # 构建约束（复用完美的 _build_joint_goal）
         goal_constraints = self._build_joint_goal(target_js.name, target_js.position, suffix)
+        if not goal_constraints.joint_constraints:
+            self.get_logger().error(
+                f'[{group_name}] 未生成任何关节约束，请检查 IK 结果关节名与后缀 [{suffix}] 是否匹配'
+            )
+            return False
 
         goal_msg = MoveGroup.Goal()
         goal_msg.request.planner_id                      = 'RRTConnectkConfigDefault'
@@ -258,6 +271,9 @@ class AdamuDualArmController(Node):
             self._build_joint_goal(left_js.name,  left_js.position,  'Left').joint_constraints +
             self._build_joint_goal(right_js.name, right_js.position, 'Right').joint_constraints
         )
+        if not combined.joint_constraints:
+            self.get_logger().error('双臂规划未生成任何关节约束，请检查 IK 返回关节命名')
+            return False
 
         goal_msg = MoveGroup.Goal()
         goal_msg.request.planner_id                      = 'RRTConnectkConfigDefault'
@@ -304,9 +320,15 @@ class AdamuDualArmController(Node):
     # Pilz 工业规划核心接口 (LIN 直线 / PTP 点到点)
     # =========================================================================
 
-    def _build_pose_goal(self, link_name: str, target_pose: Pose) -> Constraints:
+    def _build_pose_goal(
+        self,
+        link_name: str,
+        target_pose: Pose,
+        position_tolerance: float = 0.005,
+        orientation_tolerance: float = 0.03,
+    ) -> Constraints:
         """为 Pilz 规划器构建严格的 6DoF 笛卡尔目标约束"""
-        # 1. 位置约束 (容忍度 1mm 的球形包围盒)
+        # 1. 位置约束（球形容忍区）
         pc = PositionConstraint()
         pc.header.frame_id = 'world'
         pc.link_name       = link_name
@@ -314,7 +336,7 @@ class AdamuDualArmController(Node):
         bv = BoundingVolume()
         sphere = SolidPrimitive()
         sphere.type = SolidPrimitive.SPHERE
-        sphere.dimensions = [0.001]  # 1mm 误差允许
+        sphere.dimensions = [position_tolerance]
         bv.primitives.append(sphere)
         
         sphere_pose = copy.deepcopy(target_pose)
@@ -323,14 +345,14 @@ class AdamuDualArmController(Node):
         pc.constraint_region = bv
         pc.weight = 1.0
 
-        # 2. 姿态约束 (严格保持姿态，容忍度极小)
+        # 2. 姿态约束
         oc = OrientationConstraint()
         oc.header.frame_id = 'world'
         oc.link_name       = link_name
         oc.orientation     = target_pose.orientation
-        oc.absolute_x_axis_tolerance = 0.005
-        oc.absolute_y_axis_tolerance = 0.005
-        oc.absolute_z_axis_tolerance = 0.005
+        oc.absolute_x_axis_tolerance = orientation_tolerance
+        oc.absolute_y_axis_tolerance = orientation_tolerance
+        oc.absolute_z_axis_tolerance = orientation_tolerance
         oc.weight = 1.0
 
         constraint = Constraints()
@@ -345,7 +367,11 @@ class AdamuDualArmController(Node):
         target_pose: Pose,
         planner_id: str = 'LIN',  # 可选 'LIN' (直线) 或 'PTP' (点到点)
         vel_scale:  float = 0.1,
-        acc_scale:  float = 0.1
+        acc_scale:  float = 0.1,
+        position_tolerance: float = 0.005,
+        orientation_tolerance: float = 0.03,
+        planning_time: float = 3.0,
+        num_attempts: int = 5,
     ):
         """调用 Pilz 管道生成工业级平滑轨迹"""
         self.get_logger().info(f'[{group_name}] 启动 Pilz [{planner_id}] 规划...')
@@ -357,10 +383,18 @@ class AdamuDualArmController(Node):
         goal_msg.request.group_name                      = group_name
         goal_msg.request.max_velocity_scaling_factor     = vel_scale
         goal_msg.request.max_acceleration_scaling_factor = acc_scale
+        goal_msg.request.allowed_planning_time           = planning_time
+        goal_msg.request.num_planning_attempts           = num_attempts
         
-        goal_constraints = self._build_pose_goal(tip_link, target_pose)
+        goal_constraints = self._build_pose_goal(
+            tip_link,
+            target_pose,
+            position_tolerance=position_tolerance,
+            orientation_tolerance=orientation_tolerance,
+        )
         goal_msg.request.goal_constraints = [goal_constraints]
-        goal_msg.request.plan_only = True  # 只规划不执行，用于提取轨迹
+        # MoveGroup.action 的 plan_only 位于 planning_options，而非 request
+        goal_msg.planning_options.plan_only = True  # 只规划不执行，用于提取轨迹
 
         goal_handle = await wrap_future(self._move_group_client.send_goal_async(goal_msg))
         if not goal_handle.accepted:
@@ -406,9 +440,35 @@ class AdamuDualArmController(Node):
 
         # 强制使用 LIN 直线规划器
         traj = await self._plan_with_pilz(
-            group_name, tip_link, target_pose, planner_id='LIN', vel_scale=vel, acc_scale=vel
+            group_name,
+            tip_link,
+            target_pose,
+            planner_id='LIN',
+            vel_scale=vel,
+            acc_scale=vel,
+            position_tolerance=0.005,
+            orientation_tolerance=0.03,
+            planning_time=3.0,
+            num_attempts=5,
         )
-        if traj is None: return False
+        if traj is None:
+            self.get_logger().warn(
+                f'[{group_name}] LIN 首次规划失败，尝试放宽容差后重试'
+            )
+            traj = await self._plan_with_pilz(
+                group_name,
+                tip_link,
+                target_pose,
+                planner_id='LIN',
+                vel_scale=max(0.03, vel * 0.7),
+                acc_scale=max(0.03, vel * 0.7),
+                position_tolerance=0.01,
+                orientation_tolerance=0.08,
+                planning_time=6.0,
+                num_attempts=10,
+            )
+            if traj is None:
+                return False
 
         return await self._send_to_hw(hw_client, group_name, traj)
 
@@ -419,6 +479,9 @@ class AdamuDualArmController(Node):
 
         left_start  = await self.get_current_eef_pose('left_arm', 'left_hand_tcp')
         right_start = await self.get_current_eef_pose('right_arm', 'right_hand_tcp')
+        if left_start is None or right_start is None:
+            self.get_logger().error('❌ 获取双臂起始位姿失败，无法执行直线运动')
+            return False
 
         # 2. 构造目标
         left_target = copy.deepcopy(left_start)
