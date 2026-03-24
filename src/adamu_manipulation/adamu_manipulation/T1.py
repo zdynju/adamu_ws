@@ -21,26 +21,26 @@ async def main_async(arm_ctrl, fts_prc, servo_ctrl):
 
     # ── 阶段1：MoveGroup 移动到预抓取位置 (开环大范围运动) ────────────────
     # arm_ctrl.get_logger().info('=== 阶段1：MoveGroup 定位到箱子两侧 ===')
-    pose_left = Pose()
-    pose_right = Pose()
+    # pose_left = Pose()
+    # pose_right = Pose()
 
-    # ⬅️ 左 (Left)
-    pose_left.position.x = 0.3
-    pose_left.position.y = 0.15
-    pose_left.position.z = 1.28
-    pose_left.orientation.x = -0.088
-    pose_left.orientation.y = -0.673
-    pose_left.orientation.z = -0.003
-    pose_left.orientation.w = 0.734
+    # # ⬅️ 左 (Left)
+    # pose_left.position.x = 0.3
+    # pose_left.position.y = 0.22
+    # pose_left.position.z = 1.28
+    # pose_left.orientation.x = -0.088
+    # pose_left.orientation.y = -0.673
+    # pose_left.orientation.z = -0.003
+    # pose_left.orientation.w = 0.734
 
-    # ➡️ 右 (Right)
-    pose_right.position.x = 0.3
-    pose_right.position.y = -0.15
-    pose_right.position.z = 1.16
-    pose_right.orientation.x = 0.093
-    pose_right.orientation.y = -0.690
-    pose_right.orientation.z = 0.009
-    pose_right.orientation.w = 0.715
+    # # ➡️ 右 (Right)
+    # pose_right.position.x = 0.3
+    # pose_right.position.y = -0.22
+    # pose_right.position.z = 1.28
+    # pose_right.orientation.x = 0.093
+    # pose_right.orientation.y = -0.690
+    # pose_right.orientation.z = 0.009
+    # pose_right.orientation.w = 0.715
 
     # pose_left = Pose()
     # pose_right = Pose()
@@ -65,9 +65,9 @@ async def main_async(arm_ctrl, fts_prc, servo_ctrl):
 # # #   0.063, -0.242, 0.007, 0.968
 # #     -0.068, -0.215, -0.020, 0.974
 #     # 执行全局规划
-    if not await arm_ctrl.send_dual_arm_goal(pose_left, pose_right):
-        arm_ctrl.get_logger().error('预抓取定位失败！')
-        return
+    # if not await arm_ctrl.send_dual_arm_goal(pose_left, pose_right):
+    #     arm_ctrl.get_logger().error('预抓取定位失败！')
+    #     return
     # arm_ctrl.get_logger().info('=== 阶段2：笛卡尔直线接近 ===')
     # if not await arm_ctrl.execute_dual_arm_straight_line((0, -0.13, 0), (0, 0.13, 0)):
     #     arm_ctrl.get_logger().error('笛卡尔直线接近失败！')
@@ -90,7 +90,7 @@ async def main_async(arm_ctrl, fts_prc, servo_ctrl):
     #     return
 
     # arm_ctrl.get_logger().info('=== 阶段2：笛卡尔直线接近 ===')
-    # if not await arm_ctrl.execute_dual_arm_straight_line((0.02, -0.0, -0.0), (0.0, 0.0, -0.00)):
+    # if not await arm_ctrl.execute_dual_arm_straight_line((-0.02, -0.0, -0.0), (-0.02, 0.0, -0.00)):
     #     arm_ctrl.get_logger().error('笛卡尔直线接近失败！')
     #     return
 

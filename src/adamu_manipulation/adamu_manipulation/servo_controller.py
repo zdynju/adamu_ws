@@ -1,20 +1,10 @@
 """
-AdamuServoController — 双臂 MoveIt Servo 控制器（重构版）
-
-重构核心思路
-------------
-原版 servo_cartesian 的 stop_condition 回调同时承担了两件事：
-  - 返回 True       → 停止运动
-  - 返回 list[6]    → 更新速度
-
-这让调用方很难理解该返回什么，也让导纳、轨迹跟踪等逻辑都挤进同一个回调。
-
-重构后拆成两个职责清晰的参数：
+AdamuServoController — 双臂 MoveIt Servo 控制器
   - velocity_fn(t: float) -> list[float]   # 给定已运行时间，输出6维速度
   - termination_fn()      -> bool           # 判断是否应该停止
 
 调用方只需关心"我想动多快"和"我想什么时候停"，两者互相独立。
-导纳叠加也只是 velocity_fn 内部的一个加法，不需要单独的方法。
+导纳叠加在 velocity_fn 
 """
 
 import asyncio
@@ -30,12 +20,6 @@ from adamu_manipulation.fts_processor import FTSProcessor
 # ─────────────────────────────────────────────────────────────────────────────
 
 def wrap_future(rclpy_future):
-    """
-    将 rclpy.Future 转换为 asyncio.Future。
-
-    rclpy 的 Future 不能直接被 await，需要通过此桥接函数转换。
-    解决在 asyncio 事件循环中调用 ROS2 服务时出现的 "Task got bad yield" 报错。
-    """
     loop = asyncio.get_event_loop()
     aio_future = loop.create_future()
 
@@ -70,7 +54,6 @@ class AdamuServoController(Node):
         super().__init__('adamu_servo_controller_node')
         self.get_logger().info('初始化 Servo 控制器...')
 
-        # use_sim_time 在仿真环境下必须开启，否则时间戳对不上
         from rclpy.parameter import Parameter
         self.set_parameters([Parameter('use_sim_time', Parameter.Type.BOOL, True)])
 
@@ -255,49 +238,6 @@ class AdamuServoController(Node):
         frame_id: str = 'world',
         rate_hz: float = 50.0,
     ) -> bool:
-        """
-        单臂笛卡尔速度执行循环。
-
-        参数
-        ----
-        side : 'left' 或 'right'
-
-        velocity_fn : (t: float) -> list[float, 6]
-            给定已运行时间 t（秒），返回 [vx, vy, vz, wx, wy, wz]。
-            这是唯一的速度来源，轨迹前馈、导纳修正都在这里叠加。
-
-            示例——常速运动：
-                velocity_fn = lambda t: [0.0, 0.05, 0.0, 0.0, 0.0, 0.0]
-
-            示例——轨迹查表：
-                velocity_fn = lambda t: traj.interpolate(t)
-
-            示例——轨迹 + 导纳叠加：
-                def velocity_fn(t):
-                    v_ff  = traj.interpolate(t)
-                    v_adj = admittance.compute(fts.get_force(side), target_force)
-                    return [a + b for a, b in zip(v_ff, v_adj)]
-
-        termination_fn : () -> bool
-            返回 True 时执行循环立即停止。
-            终止逻辑（超时、目标到达、力阈值等）全部在这里判断。
-
-            示例——固定时长：
-                t0 = node.get_clock().now()
-                termination_fn = lambda: (node.get_clock().now() - t0).nanoseconds > 3e9
-
-            示例——力阈值保护：
-                termination_fn = lambda: fts.get_force('left')[2] > 50.0
-
-        frame_id : 速度指令的参考坐标系，通常为 'world'
-
-        rate_hz : 控制循环频率，建议 50–500 Hz
-
-        返回
-        ----
-        True  : 正常终止（termination_fn 返回 True）
-        False : 异常中止（Servo 未激活、发布异常、任务被取消）
-        """
         # 检查 Servo 是否已激活
         is_active = self._left_servo_active if side == 'left' else self._right_servo_active
         if not is_active:
@@ -378,28 +318,6 @@ class AdamuServoController(Node):
         frame_id: str = 'world',
         rate_hz: float = 50.0,
     ) -> bool:
-        """
-        双臂同步执行循环。
-
-        两臂共享同一个 termination_fn，任意一侧触发终止条件，
-        另一侧也会随之停止，保证双臂不会出现一侧还在运动、另一侧已停的情况。
-
-        velocity_fn_left / velocity_fn_right 各自独立，但应从同一个
-        轨迹对象派生，以保证几何上的间距一致性。
-
-        典型用法（翻转任务）
-        --------------------
-            traj = FlipTrajectory(box_dims, pivot)
-            t0   = self.get_clock().now()
-
-            await ctrl.servo_both_cartesian(
-                velocity_fn_left  = lambda t: traj.velocity_left(t),
-                velocity_fn_right = lambda t: traj.velocity_right(t),
-                termination_fn    = lambda: traj.is_done(
-                    (self.get_clock().now() - t0).nanoseconds / 1e9
-                ),
-            )
-        """
         # 用一个共享 Event 桥接两个子任务的终止
         shared_stop = asyncio.Event()
 

@@ -48,12 +48,15 @@ async def main_async(arm_ctrl, hand_ctrl, servo_ctrl):
         arm_ctrl.get_logger().error("横向接近失败！")
         return
     await asyncio.sleep(2.0)
-   
+    
+    def stop_condition():
+        
+        return False 
     # ── 阶段4 ────────────────────────────────────────────────────────────
     arm_ctrl.get_logger().info('=== 阶段4：双臂接触逼近 ===')
     if not await servo_ctrl.servo_cartesian('left', vx=0.0, vy=-0.10, vz=0.0, rate_hz=50.0,duration=10.0):
         return
-
+    
 
 def main(args=None):
     rclpy.init(args=args)
