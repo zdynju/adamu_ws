@@ -53,7 +53,8 @@ class SimpleHandController(Node):
     """简单手部控制接口 Node，纯关节位置控制。"""
 
     def __init__(self, side: str, node_name: str = None):
-        assert side in ('left', 'right'), "side 必须是 'left' 或 'right'"
+        if side not in ('left', 'right'):
+            raise ValueError("side 必须是 'left' 或 'right'")
         
         if node_name is None:
             node_name = f'{side}_simple_hand_controller'
@@ -93,12 +94,14 @@ class SimpleHandController(Node):
 
     async def set_joints(self, joint_angles: np.ndarray, duration: float = 1.0):
         """直接指定 12 维关节角度，带插值过渡。"""
-        assert len(joint_angles) == 12, '必须是 12 维关节角度'
+        if len(joint_angles) != 12:
+            raise ValueError('必须是 12 维关节角度')
         await self._interpolate_to(np.array(joint_angles, dtype=float), duration)
 
     def set_joints_immediate(self, joint_angles: np.ndarray):
         """立即发布关节角度，无插值（注意：可能会引起电机突变跳跃）。"""
-        assert len(joint_angles) == 12
+        if len(joint_angles) != 12:
+            raise ValueError('必须是 12 维关节角度')
         msg      = Float64MultiArray()
         msg.data = [float(v) for v in joint_angles]
         self._joint_pub.publish(msg)
@@ -109,6 +112,10 @@ class SimpleHandController(Node):
 
     async def _interpolate_to(self, target: np.ndarray, duration: float, freq: float = 50.0):
         """从当前位置线性插值到目标角度。"""
+        if duration < 0.0:
+            raise ValueError(f'duration 不能为负数: {duration}')
+        if freq <= 0.0:
+            raise ValueError(f'freq 必须 > 0: {freq}')
         steps    = max(1, int(duration * freq))
         dt       = duration / steps
         start    = self._current_joints.copy()

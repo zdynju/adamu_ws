@@ -41,7 +41,13 @@ def wrap_future(rclpy_future):
 
     def _done_cb(f):
         # rclpy 的回调在 ROS 线程触发，需切回 asyncio 线程安全地设置结果
-        loop.call_soon_threadsafe(aio_future.set_result, f.result())
+        try:
+            result = f.result()
+            if not aio_future.done():
+                loop.call_soon_threadsafe(aio_future.set_result, result)
+        except Exception as exc:  # noqa: BLE001
+            if not aio_future.done():
+                loop.call_soon_threadsafe(aio_future.set_exception, exc)
 
     rclpy_future.add_done_callback(_done_cb)
     return aio_future
@@ -298,6 +304,13 @@ class AdamuServoController(Node):
         True  : 正常终止（termination_fn 返回 True）
         False : 异常中止（Servo 未激活、发布异常、任务被取消）
         """
+        if side not in ('left', 'right'):
+            self.get_logger().error(f'非法 side 参数: {side}')
+            return False
+        if rate_hz <= 0.0:
+            self.get_logger().error(f'rate_hz 必须 > 0，当前值: {rate_hz}')
+            return False
+
         # 检查 Servo 是否已激活
         is_active = self._left_servo_active if side == 'left' else self._right_servo_active
         if not is_active:
@@ -308,6 +321,7 @@ class AdamuServoController(Node):
         start_time = self.get_clock().now()
         stop_event = asyncio.Event()
         loop = asyncio.get_running_loop()
+        failed = {'value': False}
 
         def _publish_callback():
             """
@@ -323,6 +337,7 @@ class AdamuServoController(Node):
                 should_stop = termination_fn()
             except Exception as e:
                 self.get_logger().error(f'termination_fn 异常: {e}')
+                failed['value'] = True
                 loop.call_soon_threadsafe(stop_event.set)
                 return
 
@@ -334,8 +349,13 @@ class AdamuServoController(Node):
             t = (self.get_clock().now() - start_time).nanoseconds / 1e9
             try:
                 vel = velocity_fn(t)
+                if len(vel) != 6:
+                    raise ValueError(
+                        f'velocity_fn 必须返回长度为 6 的序列，当前长度: {len(vel)}'
+                    )
             except Exception as e:
                 self.get_logger().error(f'velocity_fn 异常: {e}')
+                failed['value'] = True
                 loop.call_soon_threadsafe(stop_event.set)
                 return
 
@@ -344,13 +364,14 @@ class AdamuServoController(Node):
                 self._publish_twist(pub, frame_id, *vel)
             except Exception as e:
                 self.get_logger().error(f'Twist 发布失败: {e}')
+                failed['value'] = True
                 loop.call_soon_threadsafe(stop_event.set)
 
         timer = None
         try:
             timer = self.create_timer(1.0 / rate_hz, _publish_callback)
             await stop_event.wait()
-            return True
+            return not failed['value']
 
         except asyncio.CancelledError:
             self.get_logger().warn(f'{side} 臂任务被取消')
