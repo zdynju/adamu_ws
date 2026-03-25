@@ -284,17 +284,7 @@ class AdamuDualArmController(Node):
     # 笛卡尔直线运动
     # =========================================================================
 
-    async def _plan_straight_line(
-        self,
-        group_name: str,
-        tip_link:   str,
-        *,
-        dx: float = 0.0,
-        dy: float = 0.0,
-        dz: float = 0.0,
-        fraction_threshold: float = 0.99,
-        avoid_collisions:   bool  = True,
-    ):
+    async def _plan_straight_line(self,group_name: str,tip_link: str, dx: float = 0.0,dy: float = 0.0, dz: float = 0.0, fraction_threshold: float = 0.99, avoid_collisions: bool  = True):
         await self._wait_joint_state_stable()   # 等待接触后关节状态稳定
         start_pose = await self.get_current_eef_pose(group_name, tip_link)
         if start_pose is None:

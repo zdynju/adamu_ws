@@ -723,9 +723,9 @@
     <disable_collisions link1="wristPitchRight" link2="wristYawRight" reason="Adjacent"/>
 
 
-    <disable_collisions link1="wristRollRight" link2="R_thumb_proximal" reason="User_Forced" />
+    <!-- <disable_collisions link1="wristRollRight" link2="R_thumb_proximal" reason="User_Forced" />
     <disable_collisions link1="wristRollRight" link2="R_thumb_proximal_base" reason="User_Forced" />
     
     <disable_collisions link1="wristRollLeft" link2="L_thumb_proximal" reason="User_Forced" />
-    <disable_collisions link1="wristRollLeft" link2="L_thumb_proximal_base" reason="User_Forced" />
+    <disable_collisions link1="wristRollLeft" link2="L_thumb_proximal_base" reason="User_Forced" /> -->
 </robot>

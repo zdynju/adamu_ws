@@ -46,22 +46,22 @@ async def main_async(arm_ctrl, fts_prc, servo_ctrl):
     # pose_right = Pose()
 
     # # ⬅️ 左 (Left)
-    # pose_left.position.x = 0.289
-    # pose_left.position.y = 0.0089
+    # pose_left.position.x = 0.35
+    # pose_left.position.y = 0.2
     # pose_left.position.z = 1.291
-    # pose_left.orientation.x = -0.385
-    # pose_left.orientation.y = 0.644
-    # pose_left.orientation.z = 0.558
-    # pose_left.orientation.w = -0.355
+    # pose_left.orientation.x = 0.0
+    # pose_left.orientation.y = 0.0
+    # pose_left.orientation.z = 0.0
+    # pose_left.orientation.w = 1.0
 
     # # ➡️ 右 (Right)
     # pose_right.position.x = 0.353
-    # pose_right.position.y = -0.21
+    # pose_right.position.y = -0.2
     # pose_right.position.z = 1.276
-    # pose_right.orientation.x = 0.063
-    # pose_right.orientation.y = -0.689
-    # pose_right.orientation.z = 0.005
-    # pose_right.orientation.w = 0.722
+    # pose_right.orientation.x = 0.0
+    # pose_right.orientation.y = 0.0
+    # pose_right.orientation.z = 0.0
+    # pose_right.orientation.w = 1.0
 # 0.289, 0.089, 1.291
 # -0.385, 0.644, 0.558, -0.355
 # 0.353, -0.111, 1.276
