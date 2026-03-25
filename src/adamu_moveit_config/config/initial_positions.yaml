@@ -25,23 +25,23 @@ initial_positions:
   R_thumb_MCP_joint1: 0
   R_thumb_MCP_joint2: 0
   R_thumb_PIP_joint: 0
-  elbow_Left: 0
-  elbow_Right: -1.5
+  elbow_Left: -1.2
+  elbow_Right: -1.2
   neckPitch: 0
   neckYaw: 0
-  shoulderPitch_Left: 0
-  shoulderPitch_Right: -0.5
-  shoulderRoll_Left: 0
-  shoulderRoll_Right: -0.2
+  shoulderPitch_Left: -0.2
+  shoulderPitch_Right: -0.2
+  shoulderRoll_Left: 0.5
+  shoulderRoll_Right: -0.5
   shoulderYaw_Left: 0
   shoulderYaw_Right: 0.0
   waistPitch: 0
-  waistRoll: -0.0
+  waistRoll: 0.0
   waistYaw: 0
   wristPitch_Left: 0
   wristPitch_Right: 0
-  wristRoll_Left: 0
-  wristRoll_Right: -0.3
+  wristRoll_Left: 0.0
+  wristRoll_Right: -0.0
   wristYaw_Left: 0
   wristYaw_Right: 0
 
