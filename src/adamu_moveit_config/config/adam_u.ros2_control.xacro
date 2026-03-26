@@ -7,8 +7,10 @@
             <hardware>
                 <plugin>mujoco_ros2_control/MujocoSystemInterface</plugin>
                 <param name="mujoco_model">$(find adamu_description)/mujoco/scene_adam_u.xml</param>
+                <param name="odom_free_joint_name">target_box_fixed_joint</param>
+                <param name="odom_topic">/simulator/box_state</param>
             </hardware>
-
+            
             <sensor name="overhead_cam">
               <param name="frame_name">overhead_cam_frame</param>
               <param name="info_topic">/overhead_cam/color/camera_info</param>

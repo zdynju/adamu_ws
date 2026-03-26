@@ -275,7 +275,12 @@ def generate_launch_description():
             ],
         )
     )
-    
+    box_tf_node = Node(
+        package='adamu_manipulation',  # 替换为你的真实包名
+        executable='box_state',
+        name='box_tf_broadcaster',
+        output='screen'
+    )
     # yolo_vision_node = Node(
     #     package="adamu_manipulation",
     #     executable="yolo_vision_node",
@@ -303,6 +308,7 @@ def generate_launch_description():
         left_servo_node,
         rviz_node,
         # yolo_vision_node,
+        box_tf_node,
         joint_state_broadcaster_spawner,
         delay_controllers,
         convenyor_node
