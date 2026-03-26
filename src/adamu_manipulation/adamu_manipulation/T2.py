@@ -102,11 +102,11 @@ async def run_top_ridge_grasp_basic(
     left_hand_pose.position.y = 0.113
     left_hand_pose.position.z = 1.267
 
-    # 旋转 (Quaternion)
-    # left_hand_pose.orientation.x = -0.048
-    # left_hand_pose.orientation.y = -0.593
-    # left_hand_pose.orientation.z = -0.014
-    # left_hand_pose.orientation.w = 0.804
+    #
+    left_hand_pose.orientation.x = -0.048
+    left_hand_pose.orientation.y = -0.593
+    left_hand_pose.orientation.z = -0.014
+    left_hand_pose.orientation.w = 0.804
 
 
     # ==========================================
@@ -120,11 +120,11 @@ async def run_top_ridge_grasp_basic(
     right_hand_pose.position.z = 1.266
 
     # 旋转 (Quaternion)
-    # right_hand_pose.orientation.x = 0.038
-    # right_hand_pose.orientation.y = -0.593
-    # right_hand_pose.orientation.z = 0.026
-    # right_hand_pose.orientation.w = 0.804
-    # right_hand = hands.get('right')
+    right_hand_pose.orientation.x = 0.038
+    right_hand_pose.orientation.y = -0.593
+    right_hand_pose.orientation.z = 0.026
+    right_hand_pose.orientation.w = 0.804
+    right_hand = hands.get('right')
 
     # # Step 1) 预抓取手型：先张开
     # arm_ctrl.get_logger().info('=== [Basic Top Ridge] Step 1: 右手张开 ===')

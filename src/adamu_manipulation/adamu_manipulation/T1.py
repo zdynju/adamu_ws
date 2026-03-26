@@ -21,61 +21,153 @@ async def main_async(arm_ctrl, fts_prc, servo_ctrl):
 
     # ── 阶段1：MoveGroup 移动到预抓取位置 (开环大范围运动) ────────────────
     arm_ctrl.get_logger().info('=== 阶段1：MoveGroup 定位到箱子两侧 ===')
-    pose_left = Pose()
-    pose_right = Pose()
-
-    # ⬅️ 左 (Left)
-    pose_left.position.x = 0.35
-    pose_left.position.y = 0.22
-    pose_left.position.z = 1.28
-    pose_left.orientation.x = -0.088
-    pose_left.orientation.y = -0.673
-    pose_left.orientation.z = -0.003
-    pose_left.orientation.w = 0.734
-
-    #➡️ 右 (Right)
-    pose_right.position.x = 0.35
-    pose_right.position.y = -0.22
-    pose_right.position.z = 1.28
-    pose_right.orientation.x = 0.093
-    pose_right.orientation.y = -0.690
-    pose_right.orientation.z = 0.009
-    pose_right.orientation.w = 0.715
-
     # pose_left = Pose()
     # pose_right = Pose()
 
     # # ⬅️ 左 (Left)
     # pose_left.position.x = 0.35
-    # pose_left.position.y = 0.2
-    # pose_left.position.z = 1.291
-    # pose_left.orientation.x = 0.0
-    # pose_left.orientation.y = 0.0
-    # pose_left.orientation.z = 0.0
-    # pose_left.orientation.w = 1.0
+    # pose_left.position.y = 0.22
+    # pose_left.position.z = 1.28
+    # pose_left.orientation.x = -0.088
+    # pose_left.orientation.y = -0.673
+    # pose_left.orientation.z = -0.003
+    # pose_left.orientation.w = 0.734
 
-    # # ➡️ 右 (Right)
-    # pose_right.position.x = 0.353
-    # pose_right.position.y = -0.2
-    # pose_right.position.z = 1.276
-    # pose_right.orientation.x = 0.0
-    # pose_right.orientation.y = 0.0
-    # pose_right.orientation.z = 0.0
-    # pose_right.orientation.w = 1.0
+    # #➡️ 右 (Right)
+    # pose_right.position.x = 0.35
+    # pose_right.position.y = -0.22
+    # pose_right.position.z = 1.28
+    # pose_right.orientation.x = 0.093
+    # pose_right.orientation.y = -0.690
+    # pose_right.orientation.z = 0.009
+    # pose_right.orientation.w = 0.715
+
+    pose_left = Pose()
+    pose_right = Pose()
+
+    # ⬅️ 左 (Left)
+    pose_left.position.x = 0.3
+    pose_left.position.y = 0.3
+    pose_left.position.z = 1.28
+    pose_left.orientation.x = 0.114
+    pose_left.orientation.y = -0.738
+    pose_left.orientation.z = -0.424
+    pose_left.orientation.w = 0.512
+
+    # ➡️ 右 (Right)
+    pose_right.position.x = 0.34
+    pose_right.position.y = -0.25
+    pose_right.position.z = 1.15
+    pose_right.orientation.x = 0.149
+    pose_right.orientation.y = -0.584
+    pose_right.orientation.z = -0.217
+    pose_right.orientation.w = 0.768
 # 0.289, 0.089, 1.291
-# -0.385, 0.644, 0.558, -0.355
+
+
+#0.114, -0.738, -0.424, 0.512
 # 0.353, -0.111, 1.276
-# 0.063, -0.689, 0.005, 0.722
+
+#0.149, -0.584, -0.217, 0.768
+#-0.128, -0.732, 0.200, 0.639
     # 执行全局规划
     if not await arm_ctrl.send_dual_arm_goal(pose_left, pose_right):
         arm_ctrl.get_logger().error('预抓取定位失败！')
         return
     arm_ctrl.get_logger().info('=== 阶段2：笛卡尔直线接近 ===')
-    if not await arm_ctrl.execute_dual_arm_straight_line((0, -0.13, 0), (0, 0.13, 0)):
+    if not await arm_ctrl.execute_dual_arm_straight_line((0, -0.12, 0), (0, 0.13, 0)):
         arm_ctrl.get_logger().error('笛卡尔直线接近失败！')
         return
+    pose_left = Pose()
+    pose_right = Pose()
 
+    # # ⬅️ 左 (Left)
+    pose_left.position.x = 0.3
+    pose_left.position.y = 0.13
+    pose_left.position.z = 1.3
+    pose_left.orientation.x = 0.114
+    pose_left.orientation.y = -0.738
+    pose_left.orientation.z = -0.424
+    pose_left.orientation.w = 0.512
 
+    # ➡️ 右 (Right)
+    pose_right.position.x = 0.34
+    pose_right.position.y = -0.13
+    pose_right.position.z = 1.15
+    pose_right.orientation.x = 0.149
+    pose_right.orientation.y = -0.584
+    pose_right.orientation.z = -0.217
+    pose_right.orientation.w = 0.768
+    if not await arm_ctrl.send_dual_arm_goal(pose_left, pose_right):
+        arm_ctrl.get_logger().error('预抓取定位失败！')
+        return
+    # pose_left = Pose()
+    # pose_right = Pose()
+    # pose_left.position.x = 0.3
+    # pose_left.position.y = 0.3
+    # pose_left.position.z = 1.2
+    # pose_left.orientation.x = 0.114
+    # pose_left.orientation.y = -0.738
+    # pose_left.orientation.z = -0.424
+    # pose_left.orientation.w = 0.512
+
+    # # # ➡️ 右 (Right)
+    # pose_right.position.x = 0.353
+    # pose_right.position.y = 0.05
+    # pose_right.position.z = 1.36
+    # pose_right.orientation.x = 0.063
+    # pose_right.orientation.y = -0.689
+    # pose_right.orientation.z = 0.005
+    # pose_right.orientation.w = 0.772
+    # if not await arm_ctrl.send_dual_arm_goal(pose_left, pose_right):
+    #     arm_ctrl.get_logger().error('预抓取定位失败！')
+    #     return
+    # pose_left = Pose()
+    # pose_right = Pose()
+    # pose_left.position.x = 0.3
+    # pose_left.position.y = 0.3
+    # pose_left.position.z = 1.2
+    # pose_left.orientation.x = 0.114
+    # pose_left.orientation.y = -0.738
+    # pose_left.orientation.z = -0.424
+    # pose_left.orientation.w = 0.512
+
+    # # # ➡️ 右 (Right)
+    # pose_right.position.x = 0.353
+    # pose_right.position.y = 0.05
+    # pose_right.position.z = 1.36
+    # pose_right.orientation.x = 0.063
+    # pose_right.orientation.y = -0.689
+    # pose_right.orientation.z = 0.005
+    # pose_right.orientation.w = 0.772
+    # if not await arm_ctrl.send_dual_arm_goal(pose_left, pose_right):
+    #     arm_ctrl.get_logger().error('预抓取定位失败！')
+    #     return
+    # pose_left = Pose()
+    # pose_right = Pose()
+    # pose_left.position.x = 0.3
+    # pose_left.position.y = 0.3
+    # pose_left.position.z = 1.4
+    # pose_left.orientation.x = 0.114
+    # pose_left.orientation.y = -0.738
+    # pose_left.orientation.z = -0.424
+    # pose_left.orientation.w = 0.512
+
+    # # # ➡️ 右 (Right)
+    # pose_right.position.x = 0.353
+    # pose_right.position.y = 0.05
+    # pose_right.position.z = 1.36
+    # pose_right.orientation.x = 0.063
+    # pose_right.orientation.y = -0.689
+    # pose_right.orientation.z = 0.005
+    # pose_right.orientation.w = 0.772
+    # if not await arm_ctrl.send_dual_arm_goal(pose_left, pose_right):
+    #     arm_ctrl.get_logger().error('预抓取定位失败！')
+    #     return
+    # # arm_ctrl.get_logger().info('=== 阶段2：笛卡尔直线接近 ===')
+    # if not await arm_ctrl.execute_dual_arm_straight_line((0, 0.05, -0.05), (0, 0.05, 0.05)):
+    #     arm_ctrl.get_logger().error('笛卡尔直线接近失败！')
+    #     return
     # arm_ctrl.get_logger().info('=== 阶段2：笛卡尔直线接近 ===')
     # if not await arm_ctrl.execute_dual_arm_straight_line((0.11, -0.05, 0.1), (0.11, 0.05, 0.1)):
     #     arm_ctrl.get_logger().error('笛卡尔直线接近失败！')
