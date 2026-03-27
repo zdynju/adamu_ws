@@ -1,0 +1,221 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 100
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+    # 1. 现有控制器
+    left_arm_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+    right_arm_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+    left_arm_cartesian_compliance_controller:
+      type: cartesian_compliance_controller/CartesianComplianceController
+    left_motion_control_handle:
+      type: cartesian_controller_handles/MotionControlHandle
+
+    # 2. 🚨 新增：躯干、头部与双手控制器
+    waist_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+    neck_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+    left_hand_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+    right_hand_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+# --- 躯干配置 ---
+waist_controller:
+  ros__parameters:
+    joints: [waistRoll, waistPitch, waistYaw]
+    command_interfaces: [position]
+    state_interfaces: [position, velocity]
+
+# --- 头部配置 ---
+neck_controller:
+  ros__parameters:
+    joints: [neckYaw, neckPitch]
+    command_interfaces: [position]
+    state_interfaces: [position, velocity]
+
+# --- 左灵巧手配置 ---
+left_hand_controller:
+  ros__parameters:
+    joints:
+      - L_thumb_MCP_joint1
+      - L_thumb_MCP_joint2
+      - L_thumb_PIP_joint
+      - L_thumb_DIP_joint
+      - L_index_MCP_joint
+      - L_index_DIP_joint
+      - L_middle_MCP_joint
+      - L_middle_DIP_joint
+      - L_ring_MCP_joint
+      - L_ring_DIP_joint
+      - L_pinky_MCP_joint
+      - L_pinky_DIP_joint
+    command_interfaces: [position]
+    state_interfaces: [position, velocity]
+
+# --- 右灵巧手配置 ---
+right_hand_controller:
+  ros__parameters:
+    joints:
+      - R_thumb_MCP_joint1
+      - R_thumb_MCP_joint2
+      - R_thumb_PIP_joint
+      - R_thumb_DIP_joint
+      - R_index_MCP_joint
+      - R_index_DIP_joint
+      - R_middle_MCP_joint
+      - R_middle_DIP_joint
+      - R_ring_MCP_joint
+      - R_ring_DIP_joint
+      - R_pinky_MCP_joint
+      - R_pinky_DIP_joint
+    command_interfaces: [position]
+    state_interfaces: [position, velocity]
+
+# ==========================================================
+# 关节空间控制器配置 (MoveIt 模式)
+# 现在统一使用 position 接口，让 MuJoCo 底层的 PID 负责出力
+# ==========================================================
+left_arm_controller:
+  ros__parameters:
+    joints:
+      - shoulderPitch_Left
+      - shoulderRoll_Left
+      - shoulderYaw_Left
+      - elbow_Left
+      - wristYaw_Left
+      - wristPitch_Left
+      - wristRoll_Left
+    command_interfaces:
+      - position  # 🚨 必须改为 position
+    state_interfaces:
+      - position
+      - velocity
+
+right_arm_controller:
+  ros__parameters:
+    joints:
+      - shoulderPitch_Right
+      - shoulderRoll_Right
+      - shoulderYaw_Right
+      - elbow_Right
+      - wristYaw_Right
+      - wristPitch_Right
+      - wristRoll_Right
+    command_interfaces:
+      - position  # 🚨 必须改为 position
+    state_interfaces:
+      - position
+      - velocity
+
+# ==========================================================
+# 笛卡尔柔顺控制器配置 (FZI 柔顺模式)
+# ==========================================================
+left_arm_cartesian_compliance_controller:
+  ros__parameters:
+    end_effector_link: "left_hand_tcp"    # IK 求解末端
+    robot_base_link: "torso"              # 基座
+    compliance_ref_link: "left_hand_tcp"  # 刚度中心设在掌心，防翘起
+    ft_sensor_ref_link: "left_hand_tcp"   # 传感器坐标系
+    
+    joints:
+      - shoulderPitch_Left
+      - shoulderRoll_Left
+      - shoulderYaw_Left
+      - elbow_Left
+      - wristYaw_Left
+      - wristPitch_Left
+      - wristRoll_Left
+
+    command_interfaces:
+      - position  # 🚨 核心修改：FZI 输出位置指令给底层
+
+    stiffness:  # 刚度：数值越大越硬。先从这个中等偏软的值开始调
+        trans_x: 500.0
+        trans_y: 500.0
+        trans_z: 500.0
+        rot_x: 500.0
+        rot_y: 500.0
+        rot_z: 500.0
+
+    solver:
+        error_scale: 0.5
+        iterations: 1
+
+    # 🚨 新增：导纳控制的 PD 增益
+    # P 决定了反应速度，D 决定了阻尼（防抖）
+    pd_gains:
+        trans_x: {p: 0.05, d: 0.005}
+        trans_y: {p: 0.05, d: 0.005}
+        trans_z: {p: 0.05, d: 0.005}
+        rot_x: {p: 1.5}
+        rot_y: {p: 1.5}
+        rot_z: {p: 1.5}
+
+right_arm_cartesian_compliance_controller:
+  ros__parameters:
+    end_effector_link: "right_hand_tcp"
+    robot_base_link: "torso"
+    compliance_ref_link: "right_hand_tcp"
+    ft_sensor_ref_link: "right_hand_tcp"
+    joints:
+      - shoulderPitch_Right
+      - shoulderRoll_Right
+      - shoulderYaw_Right
+      - elbow_Right
+      - wristYaw_Right
+      - wristPitch_Right
+      - wristRoll_Right
+    command_interfaces:
+      - position
+    stiffness:
+        trans_x: 500.0
+        trans_y: 500.0
+        trans_z: 500.0
+        rot_x: 500.0
+        rot_y: 500.0
+        rot_z: 500.0
+    solver:
+        error_scale: 0.5
+        iterations: 1
+    pd_gains:
+        trans_x: {p: 0.05, d: 0.005}
+        trans_y: {p: 0.05, d: 0.005}
+        trans_z: {p: 0.05, d: 0.005}
+        rot_x: {p: 1.5}
+        rot_y: {p: 1.5}
+        rot_z: {p: 1.5}
+
+# ==========================================================
+# RViz 交互手柄配置
+# ==========================================================
+left_motion_control_handle:
+  ros__parameters:
+    end_effector_link: "left_hand_tcp"
+    robot_base_link: "torso"
+    joints:
+      - shoulderPitch_Left
+      - shoulderRoll_Left
+      - shoulderYaw_Left
+      - elbow_Left
+      - wristYaw_Left
+      - wristPitch_Left
+      - wristRoll_Left
+
+right_motion_control_handle:
+  ros__parameters:
+    end_effector_link: "right_hand_tcp"
+    robot_base_link: "torso"
+    joints:
+      - shoulderPitch_Right
+      - shoulderRoll_Right
+      - shoulderYaw_Right
+      - elbow_Right
+      - wristYaw_Right
+      - wristPitch_Right
+      - wristRoll_Right

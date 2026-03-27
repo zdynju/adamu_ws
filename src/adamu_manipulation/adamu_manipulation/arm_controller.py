@@ -307,9 +307,9 @@ class AdamuDualArmController(Node):
         oc.header.frame_id           = 'world'
         oc.link_name                 = tip_link
         oc.orientation               = start_pose.orientation
-        oc.absolute_x_axis_tolerance = 0.3
-        oc.absolute_y_axis_tolerance = 0.8
-        oc.absolute_z_axis_tolerance = 0.8
+        oc.absolute_x_axis_tolerance = 0.05
+        oc.absolute_y_axis_tolerance = 0.05
+        oc.absolute_z_axis_tolerance = 0.05
         oc.weight                    = 1.0
         path_constraints             = Constraints()
         path_constraints.orientation_constraints = [oc]
