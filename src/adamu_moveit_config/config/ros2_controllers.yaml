@@ -77,12 +77,28 @@ left_fts_broadcaster:
     # 这里的 sensor_name 必须匹配 URDF 中 <sensor name="..."> 的定义
     sensor_name: left_fts_sensor
     # 这里的 frame_id 建议设为手掌 site 的坐标系
+    state_interface_names:                    # ← 添加这个！
+      - force.x
+      - force.y
+      - force.z
+      - torque.x
+      - torque.y
+      - torque.z
     frame_id: left_palm_fts
+    topic_name: wrench
 
 # 🌟 补全：右手力传感器广播员配置
 right_fts_broadcaster:
   ros__parameters:
     sensor_name: right_fts_sensor
+    state_interface_names:
+      - force.x
+      - force.y
+      - force.z
+      - torque.x
+      - torque.y
+      - torque.z
+    topic_name: wrench
     frame_id: right_palm_fts
 
 left_arm_controller:
@@ -243,7 +259,7 @@ left_arm_cartesian_compliance_controller:
     end_effector_link: "left_hand_tcp"    # IK 求解末端
     robot_base_link: "torso"              # 基座
     compliance_ref_link: "left_hand_tcp"  # 刚度中心设在掌心，防翘起
-    ft_sensor_ref_link: "left_hand_tcp"   # 传感器坐标系
+    ft_sensor_ref_link: "left_hand_tfs"   # 传感器坐标系
     
     joints:
       - shoulderPitch_Left

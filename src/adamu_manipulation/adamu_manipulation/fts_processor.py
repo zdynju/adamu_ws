@@ -40,8 +40,8 @@ class FTSProcessor(Node):
 
         # --- 3. 注册订阅者 ---
         # 订阅手腕
-        self.create_subscription(WrenchStamped, '/left_fts_broadcaster/wrench', self._left_cb, 10)
-        self.create_subscription(WrenchStamped, '/right_fts_broadcaster/wrench', self._right_cb, 10)
+        self.create_subscription(WrenchStamped, '/left_ft_sensor_wrench', self._left_cb, 10)
+        self.create_subscription(WrenchStamped, '/right_ft_sensor_wrench', self._right_cb, 10)
 
         # 批量初始化并订阅10个手指
         for side_prefix in ['L', 'R']:

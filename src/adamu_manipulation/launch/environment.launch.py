@@ -61,6 +61,10 @@ def generate_launch_description():
             controller_config,
             {"use_sim_time": use_sim_time},
         ],
+        remappings=[
+        ('/left_fts_broadcaster/wrench', '/left_ft_sensor_wrench'),
+        ('/right_fts_broadcaster/wrench', '/right_ft_sensor_wrench'),
+    ]
     )
 
     # 显式定义的 MoveGroup 节点
