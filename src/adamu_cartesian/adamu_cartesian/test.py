@@ -1,75 +1,76 @@
 import rclpy
 from rclpy.node import Node
 from geometry_msgs.msg import PoseStamped
-from controller_manager_msgs.srv import SwitchController
+from tf2_ros import Buffer, TransformListener
 import time
+from rclpy.parameter import Parameter
 
-class ComplianceTest(Node):
+class TargetFrameTest(Node):
     def __init__(self):
-        super().__init__('compliance_test')
+        super().__init__('test_target_frame')
         
-        # 1. 订阅当前位姿（由控制器发布）
-        self.current_pose = None
-        self.pose_sub = self.create_subscription(
-            PoseStamped,
-            '/left_arm_cartesian_compliance_controller/current_pose',
-            self.pose_callback,
-            10)
-            
-        # 2. 发布目标位姿
+        # 1. 设置发布者 
+        self.set_parameters([Parameter('use_sim_time', Parameter.Type.BOOL, True)])
         self.target_pub = self.create_publisher(
             PoseStamped,
             '/left_arm_cartesian_compliance_controller/target_frame',
             10)
+            
+        # 2. 设置 TF 监听器（用于无缝接管）
+        self.tf_buffer = Buffer()
+        self.tf_listener = TransformListener(self.tf_buffer, self)
+        self.get_logger().info("节点已启动，正在等待 TF 树就绪...")
 
-        # 3. 切换控制器的客户端
-        self.switch_cli = self.create_client(SwitchController, '/controller_manager/switch_controller')
+    def get_current_pose(self):
+        # 尝试获取 torso 到 left_hand_tcp 的当前变换
+        try:
+            now = rclpy.time.Time()
+            trans = self.tf_buffer.lookup_transform(
+                'torso', 'left_hand_tcp', now, timeout=rclpy.duration.Duration(seconds=2.0))
+            
+            pose = PoseStamped()
+            pose.header.frame_id = 'torso'
+            pose.header.stamp = self.get_clock().now().to_msg()
+            pose.pose.position.x = trans.transform.translation.x
+            pose.pose.position.y = trans.transform.translation.y
+            pose.pose.position.z = trans.transform.translation.z
+            pose.pose.orientation = trans.transform.rotation
+            return pose
+        except Exception as e:
+            self.get_logger().error(f"获取 TF 失败: {e}")
+            return None
 
-    def pose_callback(self, msg):
-        self.current_pose = msg
+    def run_test(self):
+        # 1. 获取初始位置并原位锁死
+        start_pose = None
+        while start_pose is None and rclpy.ok():
+            start_pose = self.get_current_pose()
+            time.sleep(0.5)
+            
+        self.get_logger().info("已获取初始位姿，原位锁死中...")
+        self.target_pub.publish(start_pose)
+        time.sleep(2.0) # 等待 2 秒，让你确认手臂没抽风
 
-    def switch_to_compliance(self):
-        while self.current_pose is None:
-            self.get_logger().info('正在等待当前位姿数据...')
-            rclpy.spin_once(self, timeout_sec=0.5)
-
-        # 🚨 核心步骤：在切换前，先把目标点设为当前点，防止手臂“瞬移”抽风
-        self.target_pub.publish(self.current_pose)
-        self.get_logger().info('已同步初始位姿，准备切换...')
-
-        req = SwitchController.Request()
-        req.activate_controllers = ['left_arm_cartesian_compliance_controller', 'left_motion_control_handle']
-        req.deactivate_controllers = ['left_arm_controller']
-        req.strictness = 2 # STRICT
+        # 2. 修改目标位置：Z 轴向上移动 5 厘米
+        target_pose = start_pose
+        target_pose.pose.position.z += 0.05
         
-        self.switch_cli.call_async(req)
-        self.get_logger().info('切换请求已发送！')
+        self.get_logger().info("指令下发：沿 Z 轴向上移动 5cm ...")
+        self.target_pub.publish(target_pose)
+        time.sleep(3.0) # 等待手臂移动到位
 
-    def test_rotation(self):
-        # 切换成功后，测试旋转角度（绕 Y 轴旋转约 45 度）
-        time.sleep(2.0)
-        msg = self.current_pose
-        # 四元数控制角度：绕 Y 轴旋转
-        msg.pose.orientation.x = 0.0
-        msg.pose.orientation.y = 0.382
-        msg.pose.orientation.z = 0.0
-        msg.pose.orientation.w = 0.924
+        # 3. 回到初始位置
+        self.get_logger().info("指令下发：降回原位 ...")
+        start_pose.header.stamp = self.get_clock().now().to_msg() # 更新时间戳
+        start_pose.pose.position.z -= 0.05 # 减回去
+        self.target_pub.publish(start_pose)
         
-        self.get_logger().info('正在执行角度翻转测试...')
-        self.target_pub.publish(msg)
+        self.get_logger().info("轨迹测试完成！")
 
-def main():
-    rclpy.init()
-    node = ComplianceTest()
-    node.switch_to_compliance()
-    
-    # 运行测试
-    try:
-        # 保持运行，让它监听并执行
-        node.test_rotation()
-        rclpy.spin(node)
-    except KeyboardInterrupt:
-        pass
+def main(args=None):
+    rclpy.init(args=args)
+    node = TargetFrameTest()
+    node.run_test()
     node.destroy_node()
     rclpy.shutdown()
 

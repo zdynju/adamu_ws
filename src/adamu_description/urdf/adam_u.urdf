@@ -1294,16 +1294,16 @@
 
   <link name="left_hand_tcp"/>
   <joint name="left_wrist_to_tcp" type="fixed">
-    <parent link="wristRollLeft" />
+    <parent link="left_hand_fts" />
     <child link="left_hand_tcp" />
-    <origin xyz="0.0 0.0 -0.1" rpy="0 0 0" />
+    <origin xyz="0.0 0.0 0.0" rpy="0 0 -3.14159" />
   </joint>
 
   <link name="right_hand_tcp"/>
   <joint name="right_wrist_to_tcp" type="fixed">
-    <parent link="wristRollRight" />
-    <child link="right_hand_tcp" />
-    <origin xyz="0.0 0.0 -0.1" rpy="0 0 0" />
+    <parent link="right_hand_fts" />
+      <child link="right_hand_tcp" />
+      <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
   </joint>
 
   <link name="left_hand_fts"/>

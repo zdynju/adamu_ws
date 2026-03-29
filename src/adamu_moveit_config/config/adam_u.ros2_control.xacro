@@ -178,6 +178,7 @@
             </sensor>
             <joint name="shoulderPitch_Left">
                 <command_interface name="position"/>
+                <command_interface name="velocity"/>
                 <state_interface name="position">
                   <param name="initial_value">${initial_positions['shoulderPitch_Left']}</param>
                 </state_interface>
@@ -185,6 +186,7 @@
             </joint>
             <joint name="shoulderRoll_Left">
                 <command_interface name="position"/>
+                <command_interface name="velocity"/>
                 <state_interface name="position">
                   <param name="initial_value">${initial_positions['shoulderRoll_Left']}</param>
                 </state_interface>
@@ -192,6 +194,7 @@
             </joint>
             <joint name="shoulderYaw_Left">
                 <command_interface name="position"/>
+                <command_interface name="velocity"/>
                 <state_interface name="position">
                   <param name="initial_value">${initial_positions['shoulderYaw_Left']}</param>
                 </state_interface>
@@ -199,6 +202,7 @@
             </joint>
             <joint name="elbow_Left">
                 <command_interface name="position"/>
+                <command_interface name="velocity"/>
                 <state_interface name="position">
                   <param name="initial_value">${initial_positions['elbow_Left']}</param>
                 </state_interface>
@@ -206,6 +210,7 @@
             </joint>
             <joint name="wristYaw_Left">
                 <command_interface name="position"/>
+                <command_interface name="velocity"/>
                 <state_interface name="position">
                   <param name="initial_value">${initial_positions['wristYaw_Left']}</param>
                 </state_interface>
@@ -213,6 +218,7 @@
             </joint>
             <joint name="wristPitch_Left">
                 <command_interface name="position"/>
+                <command_interface name="velocity"/>
                 <state_interface name="position">
                   <param name="initial_value">${initial_positions['wristPitch_Left']}</param>
                 </state_interface>
@@ -220,6 +226,7 @@
             </joint>
             <joint name="wristRoll_Left">
                 <command_interface name="position"/>
+                <command_interface name="velocity"/>
                 <state_interface name="position">
                   <param name="initial_value">${initial_positions['wristRoll_Left']}</param>
                 </state_interface>
@@ -227,6 +234,7 @@
             </joint>
             <joint name="shoulderPitch_Right">
                 <command_interface name="position"/>
+                <command_interface name="velocity"/>
                 <state_interface name="position">
                   <param name="initial_value">${initial_positions['shoulderPitch_Right']}</param>
                 </state_interface>
@@ -234,6 +242,7 @@
             </joint>
             <joint name="shoulderRoll_Right">
                 <command_interface name="position"/>
+                <command_interface name="velocity"/>
                 <state_interface name="position">
                   <param name="initial_value">${initial_positions['shoulderRoll_Right']}</param>
                 </state_interface>
@@ -241,6 +250,7 @@
             </joint>
             <joint name="shoulderYaw_Right">
                 <command_interface name="position"/>
+                <command_interface name="velocity"/>
                 <state_interface name="position">
                   <param name="initial_value">${initial_positions['shoulderYaw_Right']}</param>
                 </state_interface>
@@ -248,6 +258,7 @@
             </joint>
             <joint name="elbow_Right">
                 <command_interface name="position"/>
+                <command_interface name="velocity"/>
                 <state_interface name="position">
                   <param name="initial_value">${initial_positions['elbow_Right']}</param>
                 </state_interface>
@@ -255,6 +266,7 @@
             </joint>
             <joint name="wristYaw_Right">
                 <command_interface name="position"/>
+                <command_interface name="velocity"/>
                 <state_interface name="position">
                   <param name="initial_value">${initial_positions['wristYaw_Right']}</param>
                 </state_interface>
@@ -262,6 +274,7 @@
             </joint>
             <joint name="wristPitch_Right">
                 <command_interface name="position"/>
+                <command_interface name="velocity"/>
                 <state_interface name="position">
                   <param name="initial_value">${initial_positions['wristPitch_Right']}</param>
                 </state_interface>
@@ -269,6 +282,7 @@
             </joint>
             <joint name="wristRoll_Right">
                 <command_interface name="position"/>
+                <command_interface name="velocity"/>
                 <state_interface name="position">
                   <param name="initial_value">${initial_positions['wristRoll_Right']}</param>
                 </state_interface>
@@ -276,6 +290,7 @@
             </joint>
             <joint name="L_index_MCP_joint">
                 <command_interface name="position"/>
+                <command_interface name="velocity"/>
                 <state_interface name="position">
                   <param name="initial_value">${initial_positions['L_index_MCP_joint']}</param>
                 </state_interface>
@@ -283,6 +298,7 @@
             </joint>
             <joint name="L_index_DIP_joint">
                 <command_interface name="position"/>
+                <command_interface name="velocity"/>
                 <state_interface name="position">
                   <param name="initial_value">${initial_positions['L_index_DIP_joint']}</param>
                 </state_interface>
@@ -290,6 +306,7 @@
             </joint>
             <joint name="L_middle_MCP_joint">
                 <command_interface name="position"/>
+                <command_interface name="velocity"/>
                 <state_interface name="position">
                   <param name="initial_value">${initial_positions['L_middle_MCP_joint']}</param>
                 </state_interface>
@@ -297,6 +314,7 @@
             </joint>
             <joint name="L_middle_DIP_joint">
                 <command_interface name="position"/>
+                <command_interface name="velocity"/>
                 <state_interface name="position">
                   <param name="initial_value">${initial_positions['L_middle_DIP_joint']}</param>
                 </state_interface>
@@ -304,6 +322,8 @@
             </joint>
             <joint name="L_pinky_MCP_joint">
                 <command_interface name="position"/>
+                <command_interface name="velocity"/>
+
                 <state_interface name="position">
                   <param name="initial_value">${initial_positions['L_pinky_MCP_joint']}</param>
                 </state_interface>
@@ -311,6 +331,7 @@
             </joint>
             <joint name="L_pinky_DIP_joint">
                 <command_interface name="position"/>
+                <command_interface name="velocity"/>
                 <state_interface name="position">
                   <param name="initial_value">${initial_positions['L_pinky_DIP_joint']}</param>
                 </state_interface>
@@ -318,6 +339,7 @@
             </joint>
             <joint name="L_ring_MCP_joint">
                 <command_interface name="position"/>
+                <command_interface name="velocity"/>
                 <state_interface name="position">
                   <param name="initial_value">${initial_positions['L_ring_MCP_joint']}</param>
                 </state_interface>
@@ -325,6 +347,7 @@
             </joint>
             <joint name="L_ring_DIP_joint">
                 <command_interface name="position"/>
+                <command_interface name="velocity"/>
                 <state_interface name="position">
                   <param name="initial_value">${initial_positions['L_ring_DIP_joint']}</param>
                 </state_interface>
@@ -332,6 +355,7 @@
             </joint>
             <joint name="L_thumb_MCP_joint1">
                 <command_interface name="position"/>
+                <command_interface name="velocity"/>
                 <state_interface name="position">
                   <param name="initial_value">${initial_positions['L_thumb_MCP_joint1']}</param>
                 </state_interface>
@@ -339,6 +363,7 @@
             </joint>
             <joint name="L_thumb_MCP_joint2">
                 <command_interface name="position"/>
+                <command_interface name="velocity"/>
                 <state_interface name="position">
                   <param name="initial_value">${initial_positions['L_thumb_MCP_joint2']}</param>
                 </state_interface>
@@ -346,6 +371,7 @@
             </joint>
             <joint name="L_thumb_PIP_joint">
                 <command_interface name="position"/>
+                <command_interface name="velocity"/>
                 <state_interface name="position">
                   <param name="initial_value">${initial_positions['L_thumb_PIP_joint']}</param>
                 </state_interface>
@@ -353,6 +379,7 @@
             </joint>
             <joint name="L_thumb_DIP_joint">
                 <command_interface name="position"/>
+                <command_interface name="velocity"/>
                 <state_interface name="position">
                   <param name="initial_value">${initial_positions['L_thumb_DIP_joint']}</param>
                 </state_interface>
@@ -360,6 +387,7 @@
             </joint>
             <joint name="R_index_MCP_joint">
                 <command_interface name="position"/>
+                <command_interface name="velocity"/>
                 <state_interface name="position">
                   <param name="initial_value">${initial_positions['R_index_MCP_joint']}</param>
                 </state_interface>
@@ -367,6 +395,7 @@
             </joint>
             <joint name="R_index_DIP_joint">
                 <command_interface name="position"/>
+                <command_interface name="velocity"/>
                 <state_interface name="position">
                   <param name="initial_value">${initial_positions['R_index_DIP_joint']}</param>
                 </state_interface>
@@ -374,6 +403,7 @@
             </joint>
             <joint name="R_middle_MCP_joint">
                 <command_interface name="position"/>
+                <command_interface name="velocity"/>
                 <state_interface name="position">
                   <param name="initial_value">${initial_positions['R_middle_MCP_joint']}</param>
                 </state_interface>
@@ -381,6 +411,7 @@
             </joint>
             <joint name="R_middle_DIP_joint">
                 <command_interface name="position"/>
+                <command_interface name="velocity"/>
                 <state_interface name="position">
                   <param name="initial_value">${initial_positions['R_middle_DIP_joint']}</param>
                 </state_interface>
@@ -388,6 +419,7 @@
             </joint>
             <joint name="R_pinky_MCP_joint">
                 <command_interface name="position"/>
+                <command_interface name="velocity"/>
                 <state_interface name="position">
                   <param name="initial_value">${initial_positions['R_pinky_MCP_joint']}</param>
                 </state_interface>
@@ -395,6 +427,7 @@
             </joint>
             <joint name="R_pinky_DIP_joint">
                 <command_interface name="position"/>
+                <command_interface name="velocity"/>
                 <state_interface name="position">
                   <param name="initial_value">${initial_positions['R_pinky_DIP_joint']}</param>
                 </state_interface>
@@ -402,6 +435,7 @@
             </joint>
             <joint name="R_ring_MCP_joint">
                 <command_interface name="position"/>
+                <command_interface name="velocity"/>
                 <state_interface name="position">
                   <param name="initial_value">${initial_positions['R_ring_MCP_joint']}</param>
                 </state_interface>
@@ -409,6 +443,7 @@
             </joint>
             <joint name="R_ring_DIP_joint">
                 <command_interface name="position"/>
+                <command_interface name="velocity"/>
                 <state_interface name="position">
                   <param name="initial_value">${initial_positions['R_ring_DIP_joint']}</param>
                 </state_interface>
@@ -416,6 +451,7 @@
             </joint>
             <joint name="R_thumb_MCP_joint1">
                 <command_interface name="position"/>
+                <command_interface name="velocity"/>
                 <state_interface name="position">
                   <param name="initial_value">${initial_positions['R_thumb_MCP_joint1']}</param>
                 </state_interface>
@@ -423,6 +459,8 @@
             </joint>
             <joint name="R_thumb_MCP_joint2">
                 <command_interface name="position"/>
+                <command_interface name="velocity"/>
+
                 <state_interface name="position">
                   <param name="initial_value">${initial_positions['R_thumb_MCP_joint2']}</param>
                 </state_interface>
@@ -430,6 +468,7 @@
             </joint>
             <joint name="R_thumb_PIP_joint">
                 <command_interface name="position"/>
+                <command_interface name="velocity"/>
                 <state_interface name="position">
                   <param name="initial_value">${initial_positions['R_thumb_PIP_joint']}</param>
                 </state_interface>
@@ -437,6 +476,7 @@
             </joint>
             <joint name="R_thumb_DIP_joint">
                 <command_interface name="position"/>
+                <command_interface name="velocity"/>
                 <state_interface name="position">
                   <param name="initial_value">${initial_positions['R_thumb_DIP_joint']}</param>
                 </state_interface>
@@ -444,6 +484,7 @@
             </joint>
             <joint name="waistRoll">
                 <command_interface name="position"/>
+                <command_interface name="velocity"/>
                 <state_interface name="position">
                   <param name="initial_value">${initial_positions['waistRoll']}</param>
                 </state_interface>
@@ -451,6 +492,7 @@
             </joint>
             <joint name="waistPitch">
                 <command_interface name="position"/>
+                <command_interface name="velocity"/>
                 <state_interface name="position">
                   <param name="initial_value">${initial_positions['waistPitch']}</param>
                 </state_interface>
@@ -458,6 +500,7 @@
             </joint>
             <joint name="waistYaw">
                 <command_interface name="position"/>
+                <command_interface name="velocity"/>
                 <state_interface name="position">
                   <param name="initial_value">${initial_positions['waistYaw']}</param>
                 </state_interface>
@@ -465,6 +508,7 @@
             </joint>
             <joint name="neckYaw">
                 <command_interface name="position"/>
+                <command_interface name="velocity"/>
                 <state_interface name="position">
                   <param name="initial_value">${initial_positions['neckYaw']}</param>
                 </state_interface>
@@ -472,6 +516,7 @@
             </joint>
             <joint name="neckPitch">
                 <command_interface name="position"/>
+                <command_interface name="velocity"/>
                 <state_interface name="position">
                   <param name="initial_value">${initial_positions['neckPitch']}</param>
                 </state_interface>

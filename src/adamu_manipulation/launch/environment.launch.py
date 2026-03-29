@@ -237,6 +237,19 @@ def generate_launch_description():
         package="controller_manager", executable="spawner",
         arguments=["R_pinky_pad_broadcaster", "--controller-manager", "/controller_manager"],
     )
+
+    right_compliance_controller_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["right_arm_cartesian_compliance_controller", "--controller-manager", "/controller_manager", "--inactive"]
+            # 初始设为 inactive，后续根据需要再激活
+    )
+    left_compliance_controller_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["left_arm_cartesian_compliance_controller", "--controller-manager", "/controller_manager", "--inactive"],
+         # 初始设为 inactive，后续根据需要再激活
+    )
     # conveyor_velocity_controller_spawner = Node(
         # package="controller_manager",
         # executable="spawner",
@@ -272,6 +285,10 @@ def generate_launch_description():
                 R_middle_pad_broadcaster_spawner,
                 R_ring_pad_broadcaster_spawner,
                 R_pinky_pad_broadcaster_spawner,
+                right_compliance_controller_spawner,
+                left_compliance_controller_spawner,
+                # conveyor_velocity_controller_spawner,
+                # dual_arm_controller_spawner
             ],
         )
     )

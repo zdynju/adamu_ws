@@ -12,6 +12,8 @@ controller_manager:
       type: joint_trajectory_controller/JointTrajectoryController
     left_arm_cartesian_compliance_controller:
       type: cartesian_compliance_controller/CartesianComplianceController
+    right_arm_cartesian_compliance_controller:
+      type: cartesian_compliance_controller/CartesianComplianceController
     left_motion_control_handle:
       type: cartesian_controller_handles/MotionControlHandle
 
@@ -145,7 +147,7 @@ left_arm_cartesian_compliance_controller:
 
     solver:
         error_scale: 0.5
-        iterations: 1
+        iterations: 5
 
     # 🚨 新增：导纳控制的 PD 增益
     # P 决定了反应速度，D 决定了阻尼（防抖）
@@ -182,7 +184,7 @@ right_arm_cartesian_compliance_controller:
         rot_z: 500.0
     solver:
         error_scale: 0.5
-        iterations: 1
+        iterations: 5
     pd_gains:
         trans_x: {p: 0.05, d: 0.005}
         trans_y: {p: 0.05, d: 0.005}

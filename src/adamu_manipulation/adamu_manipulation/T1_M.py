@@ -189,7 +189,7 @@ async def main_task(controller, planner):
 
     # 1. 获取箱子位姿
     box_pose = None
-    while box_pose is None:
+    while box_pose is None:         
         box_pose = planner.get_box_pose()
         if box_pose is None: await asyncio.sleep(0.5)
 
@@ -209,27 +209,27 @@ async def main_task(controller, planner):
     controller.get_logger().info("▶️ 阶段 1: 关节空间移动至预抓取位")
     if await controller.send_dual_arm_goal(l_pre, r_pre):
         await asyncio.sleep(1.0)
-        controller.get_logger().info("▶️ 阶段 2: 笛卡尔直线压紧")
-        await controller.execute_dual_arm_straight_line(l_delta, r_delta)
+        # controller.get_logger().info("▶️ 阶段 2: 笛卡尔直线压紧")
+        # await controller.execute_dual_arm_straight_line(l_delta, r_delta)
 
-    controller.get_logger().info("▶️ 阶段 3: 执行斜向上 45° 同步提拉...")
+    # controller.get_logger().info("▶️ 阶段 3: 执行斜向上 45° 同步提拉...")
         
-    pull_dist = 0.15 # 5cm
-    angle_rad = math.radians(45)
+    # pull_dist = 0.15 # 5cm
+    # angle_rad = math.radians(45)
     
-    # 计算世界坐标系下的分量
-    dz = pull_dist * math.sin(angle_rad)  # 向上
-    dx = pull_dist * math.cos(angle_rad) # 向后回拉 (假设 -X 是身体方向)
-    dy = 0.01                         # 左右不偏移
+    # # 计算世界坐标系下的分量
+    # dz = pull_dist * math.sin(angle_rad)  # 向上
+    # dx = pull_dist * math.cos(angle_rad) # 向后回拉 (假设 -X 是身体方向)
+    # dy = 0.01                         # 左右不偏移
     
-    # 【极其关键】双臂必须共享同一个位移矢量！
-    left_lift_delta = (dx, dy, dz)
-    right_lift_delta = (dx,-dy,dz)
+    # # 【极其关键】双臂必须共享同一个位移矢量！
+    # left_lift_delta = (dx, dy, dz)
+    # right_lift_delta = (dx,-dy,dz)
     
-    # 调用直线插补运动，保持手部姿态绝对锁定
-    await controller.execute_dual_arm_straight_line(left_lift_delta, right_lift_delta)
+    # # 调用直线插补运动，保持手部姿态绝对锁定
+    # await controller.execute_dual_arm_straight_line(left_lift_delta, right_lift_delta)
     
-    controller.get_logger().info("✅ 提拉 5cm 动作完成！")
+    # controller.get_logger().info("✅ 提拉 5cm 动作完成！")
 
 def main(args=None):
     rclpy.init(args=args)

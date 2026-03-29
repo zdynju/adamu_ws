@@ -168,7 +168,7 @@
                           <geom mesh="wristRollLeft_1" material="sliver" class="visual" />
                           <geom mesh="wristRollLeft_0" class="collision" />
                           <geom mesh="wristRollLeft_1" class="collision" />
-                          <site name="left_palm_fts" pos="0 0 -0.1" euler= "0.0 0 3.14159" size="0.01" rgba="1 0 0 1" group="3"/>
+                          <site name="left_palm_fts" pos="0 0 -0.1" euler= "0.0 0.0 0  " size="0.01" rgba="1 0 0 1" group="3"/>
                        <body name="L_thumb_proximal_base" gravcomp="1" pos="0.0245 -0.01 -0.047">
                             <inertial pos="0.00431634 0.00026726 -0.00141885" quat="0.402129 0.420407 0.428718 0.691196" mass="0.0089319" diaginertia="5.80786e-07 4.69278e-07 2.69935e-07" />
                             <joint name="L_thumb_MCP_joint1" pos="0 0 0" axis="0 0 -1" range="0 1.1" actuatorfrcrange="-1 1" damping="0.1" armature="0.005"/>

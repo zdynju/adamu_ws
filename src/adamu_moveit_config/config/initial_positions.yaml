@@ -42,7 +42,7 @@ initial_positions:
   wristPitch_Right: 0
   wristRoll_Left: 0.0
   wristRoll_Right: -0.0
-  wristYaw_Left: 0
+  wristYaw_Left: 0.3
   wristYaw_Right: 0
 
 

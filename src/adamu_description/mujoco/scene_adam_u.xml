@@ -1,6 +1,6 @@
 <mujoco model="adam_u scene">
   <compiler angle="radian" meshdir="assets/" />
-	<include file="adam_u_c.xml" />
+	<include file="adam_u.xml" />
 	<include file="convenyor.xml" />
 	<statistic center="0 0 1" extent="1.8" />
 	<visual>
