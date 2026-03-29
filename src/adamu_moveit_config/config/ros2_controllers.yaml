@@ -259,7 +259,7 @@ left_arm_cartesian_compliance_controller:
     end_effector_link: "left_hand_tcp"    # IK 求解末端
     robot_base_link: "torso"              # 基座
     compliance_ref_link: "left_hand_tcp"  # 刚度中心设在掌心，防翘起
-    ft_sensor_ref_link: "left_hand_tfs"   # 传感器坐标系
+    ft_sensor_ref_link: "left_hand_fts"   # 传感器坐标系
     
     joints:
       - shoulderPitch_Left
@@ -275,7 +275,7 @@ left_arm_cartesian_compliance_controller:
 
     stiffness:  # 刚度：数值越大越硬。先从这个中等偏软的值开始调
         trans_x: 500.0
-        trans_y: 500.0
+        trans_y: 20.0
         trans_z: 500.0
         rot_x: 20.0
         rot_y: 20.0

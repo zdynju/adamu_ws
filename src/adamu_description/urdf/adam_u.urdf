@@ -1296,7 +1296,7 @@
   <joint name="left_wrist_to_tcp" type="fixed">
     <parent link="left_hand_fts" />
     <child link="left_hand_tcp" />
-    <origin xyz="0.0 0.0 0.0" rpy="0 0 -3.14159" />
+    <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
   </joint>
 
   <link name="right_hand_tcp"/>
@@ -1310,7 +1310,7 @@
   <joint name="left_wrist_to_fts" type="fixed">
     <parent link="wristRollLeft" />
     <child link="left_hand_fts" />
-    <origin xyz="0.0 0.0 -0.1" rpy="0 0 3.14159" />
+    <origin xyz="0.0 0.0 -0.1" rpy="0 0 0" />
   </joint>
 
   <link name="right_hand_fts"/>
