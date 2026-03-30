@@ -62,11 +62,15 @@ def generate_launch_description():
             {"use_sim_time": use_sim_time},
         ],
         remappings=[
-        ('/left_fts_broadcaster/wrench', '/left_ft_sensor_wrench'),
-        ('/right_fts_broadcaster/wrench', '/right_ft_sensor_wrench'),
-    ]
+            # FTS broadcaster → fts_processor 订阅的话题
+            ('/left_fts_broadcaster/wrench',  '/left_ft_sensor_wrench'),
+            ('/right_fts_broadcaster/wrench', '/right_ft_sensor_wrench'),
+            # cartesian_compliance_controller 内部硬编码订阅 /{controller_name}/ft_sensor_wrench
+            # 所有控制器都跑在同一个 control_node 进程里，所以重映射必须加在这里
+            ('/left_arm_cartesian_compliance_controller/ft_sensor_wrench',  '/left_ft_sensor_wrench'),
+            ('/right_arm_cartesian_compliance_controller/ft_sensor_wrench', '/right_ft_sensor_wrench'),
+        ]
     )
-
     # 显式定义的 MoveGroup 节点
     move_group_node = Node(
         package="moveit_ros_move_group",
