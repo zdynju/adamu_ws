@@ -298,7 +298,7 @@ right_arm_cartesian_compliance_controller:
     end_effector_link: "right_hand_tcp"
     robot_base_link: "torso"
     compliance_ref_link: "right_hand_tcp"
-    ft_sensor_ref_link: "right_hand_tcp"
+    ft_sensor_ref_link: "right_hand_fts"
     joints:
       - shoulderPitch_Right
       - shoulderRoll_Right

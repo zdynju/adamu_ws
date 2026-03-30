@@ -13,25 +13,23 @@ class DualArmFTSMonitor(Node):
         self.get_logger().info('🚀 双臂及灵巧手 FTS 实时监控面板已就绪')
 
     def display_dashboard(self):
-        # 1. 获取手腕数据
-        l_raw = self.fts_prs.get_original_force('left')
-        r_raw = self.fts_prs.get_original_force('right')
-        l_std = self.fts_prs.get_standardized_force('left')
-        r_std = self.fts_prs.get_standardized_force('right')
-
-        # 获取手指数据 (调用新版接口，返回的是包含 'force' 和 'frame' 的字典)
-        l_fingers = self.fts_prs.get_all_finger_forces('left')
-        r_fingers = self.fts_prs.get_all_finger_forces('right')
+        # 1. 极其清爽的调用方式！
+        l_raw = self.fts_prs.get_raw_wrist_force('left')
+        r_raw = self.fts_prs.get_raw_wrist_force('right')
+        l_std = self.fts_prs.get_processed_wrist_force('left')
+        r_std = self.fts_prs.get_processed_wrist_force('right')
 
         # 只要手腕数据没拿到，就先跳过，防止启动瞬间没 TF 报错
         if any(x is None for x in [l_raw, r_raw, l_std, r_std]):
             return
 
-        # 🌟 核心修改点：适配新的数据结构 v['force'][2]
+        # 获取手指数据 
+        l_fingers = self.fts_prs.get_all_finger_forces('left')
+        r_fingers = self.fts_prs.get_all_finger_forces('right')
+
         # 提取手指的 Z 轴力 (法向按压力)，如果暂无数据则默认为 0
         lf_z = {k: v['force'][2] for k, v in l_fingers.items()} if l_fingers else {k: 0.0 for k in ['thumb', 'index', 'middle', 'ring', 'pinky']}
         rf_z = {k: v['force'][2] for k, v in r_fingers.items()} if r_fingers else {k: 0.0 for k in ['thumb', 'index', 'middle', 'ring', 'pinky']}
-
         # 2. 打印面板 (使用 \033c 清屏实现原地刷新)
         print("\033c", end="") 
         print("======================================================")
