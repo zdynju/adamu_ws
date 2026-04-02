@@ -88,7 +88,7 @@ class TaskPlanner(Node):
 # =============================================================================
 # 几何解算：根据硬件定义生成左右手 Pose
 # =============================================================================
-def calc_bimanual_poses_1(box_pose, half_width=0.1, clearance=0.05):
+def calc_bimanual_poses_1(box_pose, half_width=0.08, clearance=0.05):
     # 1. 定义左手硬件基准 (X向上, Y手背向左, Z向后)
     # 对应的右手系矩阵投影：
     R_left_base = np.array([
@@ -119,11 +119,11 @@ def calc_bimanual_poses_1(box_pose, half_width=0.1, clearance=0.05):
     R_right_final = np.dot(R_right_base, R_R_adjust)
 
     # ---------------- 后续代码保持不变，只需将传入的矩阵改为 final ----------------
-    left_pre = get_hand_world_pose(box_pose, [-0.08, half_width + clearance, 0.06], R_left_final)
-    right_pre = get_hand_world_pose(box_pose, [-0.08, -half_width - clearance, 0.06], R_right_final)
+    left_pre = get_hand_world_pose(box_pose, [-0.07, half_width + clearance, 0.0], R_left_final)
+    right_pre = get_hand_world_pose(box_pose, [-0.07, -half_width - clearance, 0.0], R_right_final)
 
-    left_grasp = get_hand_world_pose(box_pose, [-0.08, half_width-0.01 , 0.06], R_left_final)
-    right_grasp = get_hand_world_pose(box_pose, [-0.08, -half_width+0.01 , 0.06], R_right_final)
+    left_grasp = get_hand_world_pose(box_pose, [-0.07, half_width-0.015 , 0.0], R_left_final)
+    right_grasp = get_hand_world_pose(box_pose, [-0.07, -half_width+0.01 , 0.0], R_right_final)
     # 计算位移矢量用于直线运动
     l_delta = (left_grasp.position.x - left_pre.position.x,
                left_grasp.position.y - left_pre.position.y,

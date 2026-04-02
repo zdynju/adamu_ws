@@ -9,9 +9,6 @@ from rclpy.executors import MultiThreadedExecutor
 from adamu_manipulation.arm_controller import AdamuDualArmController
 from adamu_manipulation.fts_processor import FTSProcessor
 # 引入我们上一轮写好的 Servo 控制器
-from adamu_manipulation.servo_controller import AdamuServoController 
-from adamu_manipulation.contact_phase import ContactPhase,ContactParams
-from adamu_manipulation.pick import PickParams,PickPhase
 async def main_async(arm_ctrl, fts_prc, servo_ctrl):
     # ── 等待所有底层服务就绪 ──────────────────────────────────────────────
     if not await arm_ctrl.wait_for_services():

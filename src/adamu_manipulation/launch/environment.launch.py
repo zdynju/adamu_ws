@@ -246,10 +246,10 @@ def generate_launch_description():
         arguments=["R_pinky_pad_broadcaster", "--controller-manager", "/controller_manager"],
     )
 
-    right_compliance_controller_spawner = Node(
+    right_motion_controller_spawner = Node(
         package="controller_manager",
         executable="spawner",
-        arguments=["right_arm_cartesian_compliance_controller", "--controller-manager", "/controller_manager", "--inactive"]
+        arguments=["right_arm_cartesian_motion_controller", "--controller-manager", "/controller_manager", "--inactive"]
             # 初始设为 inactive，后续根据需要再激活
     )
     left_compliance_controller_spawner = Node(
@@ -293,7 +293,7 @@ def generate_launch_description():
                 R_middle_pad_broadcaster_spawner,
                 R_ring_pad_broadcaster_spawner,
                 R_pinky_pad_broadcaster_spawner,
-                right_compliance_controller_spawner,
+                right_motion_controller_spawner,
                 left_compliance_controller_spawner,
                 # conveyor_velocity_controller_spawner,
                 # dual_arm_controller_spawner
@@ -305,6 +305,19 @@ def generate_launch_description():
         executable='box_state',
         name='box_tf_broadcaster',
         output='screen'
+    )
+
+    
+    # 定义 FTS 处理器节点
+    fts_processor_node = Node(
+        package='adamu_manipulation',      # 包名
+        executable='fts_processor',        # setup.py 中指定的控制台脚本名
+        name='fts_processor_node',         # 运行时的节点名
+        output='screen',                   # 将日志输出到终端
+        parameters=[{
+            'tool_mass': 0.54,             # 你可以在这里覆盖代码里的默认参数
+            'filter_alpha': 0.1
+        }],
     )
     # yolo_vision_node = Node(
     #     package="adamu_manipulation",
@@ -321,6 +334,15 @@ def generate_launch_description():
         output="screen",
         parameters=[{"use_sim_time": use_sim_time}],
     )
+    t1_master_node = Node(
+        package='adamu_manipulation',    # 你的包名
+        executable='T1_M',               # setup.py 中指定的可执行文件名
+        name='dual_arm_task_master',     # 运行时的节点别名
+        output='screen',                 # 极其重要：这样你才能看到状态机的日志输出
+        parameters=[{
+            'use_sim_time': True,        # 仿真环境下必须开启，确保和 MuJoCo 时间同步
+        }]
+    )
 
     return LaunchDescription([
         # 全局强制时间同步魔法
@@ -334,7 +356,9 @@ def generate_launch_description():
         rviz_node,
         # yolo_vision_node,
         box_tf_node,
+        fts_processor_node,
         joint_state_broadcaster_spawner,
         delay_controllers,
-        convenyor_node
+        convenyor_node,
+        t1_master_node,
     ])

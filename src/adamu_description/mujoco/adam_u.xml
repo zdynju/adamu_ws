@@ -8,7 +8,7 @@
     </default>
     <default class="collision">
       <geom group="3" type="mesh" contype="1" conaffinity="2"
-            solref="0.02 1" solimp="0.9 0.95 0.001" margin="0.001"/>
+            solref="0.02 1" solimp="0.9 0.95 0.001" margin="0.001" friction="2.0 0.1 0.01" />
     </default>
   </default>
   <compiler angle="radian" meshdir="assets/" />
@@ -168,7 +168,7 @@
                           <geom mesh="wristRollLeft_1" material="sliver" class="visual" />
                           <geom mesh="wristRollLeft_0" class="collision" />
                           <geom mesh="wristRollLeft_1" class="collision" />
-                          <site name="left_palm_fts" pos="0 0 -0.1" euler= "0.0 0.0 0  " size="0.01" rgba="1 0 0 1" group="3"/>
+                          <site name="left_hand_fts" pos="0 0 -0.1" euler= "0.0 0.0 0  " size="0.01" rgba="1 0 0 1" group="3"/>
                        <body name="L_thumb_proximal_base" gravcomp="1" pos="0.0245 -0.01 -0.047">
                             <inertial pos="0.00431634 0.00026726 -0.00141885" quat="0.402129 0.420407 0.428718 0.691196" mass="0.0089319" diaginertia="5.80786e-07 4.69278e-07 2.69935e-07" />
                             <joint name="L_thumb_MCP_joint1" pos="0 0 0" axis="0 0 -1" range="0 1.1" actuatorfrcrange="-1 1" damping="0.1" armature="0.005"/>
@@ -318,7 +318,7 @@
                           <geom mesh="wristRollRight_1" material="black" class="visual" />
                           <geom mesh="wristRollRight_0" class="collision" />
                           <geom mesh="wristRollRight_1" class="collision" />
-                          <site name="right_palm_fts" pos="0 0 -0.1" euler = "0 0 0" size="0.01" rgba="0 1 0 1" group="3"/>
+                          <site name="right_hand_fts" pos="0 0 -0.1" euler = "0 0 0" size="0.01" rgba="0 1 0 1" group="3"/>
                            <body name="R_thumb_proximal_base" gravcomp="1" pos="0.0245 0.01 -0.047">
                             <inertial pos="0.00431634 -0.00026726 -0.00141884" quat="0.691196 0.428718 0.420407 0.402129" mass="0.0089319" diaginertia="5.80786e-07 4.69278e-07 2.69935e-07" />
                             <joint name="R_thumb_MCP_joint1" pos="0 0 0" axis="0 0 1" range="0 1.1" actuatorfrcrange="-1 1" damping="0.1" armature="0.005"/>
@@ -633,11 +633,11 @@
     <jointactuatorfrc name="force_neckYaw" joint="neckYaw" />
     <jointactuatorfrc name="force_neckPitch" joint="neckPitch" />
 
-    <force  name="left_fts_sensor_force"  site="left_palm_fts"/>
-    <torque name="left_fts_sensor_torque" site="left_palm_fts"/>
+    <force  name="left_fts_sensor_force"  site="left_hand_fts"/>
+    <torque name="left_fts_sensor_torque" site="left_hand_fts"/>
     
-    <force  name="right_fts_sensor_force" site="right_palm_fts"/>
-    <torque name="right_fts_sensor_torque" site="right_palm_fts"/>
+    <force  name="right_fts_sensor_force" site="right_hand_fts"/>
+    <torque name="right_fts_sensor_torque" site="right_hand_fts"/>
 
     <force  name="L_thumb_pad_force"  site="site_L_thumb_pad"/>
     <torque name="L_thumb_pad_torque" site="site_L_thumb_pad"/>

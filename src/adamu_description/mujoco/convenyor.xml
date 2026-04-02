@@ -3,7 +3,7 @@
   <worldbody>
     <body name="conveyor" pos="0.45  -2.0 1.05">
       <joint name="conveyor_linear" type="slide" axis="0 1 0" solreflimit=".08 1" damping="5e-4"/>
-      <geom name="belt" type="box" size="0.3 100.0 0.04"  mass="1000" rgba="0.3 0.3 0.3 1" friction="0.8 0.01 0.01"
+      <geom name="belt" type="box" size="0.3 100.0 0.04"  mass="1000" rgba="0.3 0.3 0.3 1" friction="1.0 1.0 1.0"
       solimp="0.95 0.9999 0.001 0.5 2.0" solref="0.004 1.0" priority="1"/>
     </body>
 

@@ -258,3 +258,21 @@ class FTSProcessor(Node):
             filtered_state = self._left_filtered if side == 'left' else self._right_filtered
             # 取前三个元素 (力 X, Y, Z) 并转为标准 Python 列表
             return filtered_state[0:3].tolist()
+        
+
+# 修改 main 函数
+def main(args=None):
+    rclpy.init(args=args)
+    fts_node = FTSProcessor()
+    
+    # 使用多线程执行器，防止 do_tare 阻塞回调
+    executor = rclpy.executors.MultiThreadedExecutor()
+    executor.add_node(fts_node)
+    
+    try:
+        executor.spin()
+    except KeyboardInterrupt:
+        fts_node.get_logger().info('FTS 处理器节点被手动终止...')
+    finally:
+        fts_node.destroy_node()
+        rclpy.shutdown()

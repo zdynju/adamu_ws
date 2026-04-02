@@ -46,6 +46,8 @@ setup(
             'terminal_hand_tuner = adamu_manipulation.terminal_hand_tuner:main',
             'box_state = adamu_manipulation.box_state:main',
             'T1_M = adamu_manipulation.T1_M:main',
+            'switcher = adamu_manipulation.controller_switch:main',
+            'cartesian_controller = adamu_manipulation.cartesian_controller:main',
         ],
     },
 )
