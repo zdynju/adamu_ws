@@ -10,6 +10,7 @@ from moveit_msgs.msg import (Constraints, JointConstraint, RobotState,
                               OrientationConstraint)
 from control_msgs.action import FollowJointTrajectory
 from geometry_msgs.msg import Pose
+from std_msgs.msg import Float64MultiArray
 
 
 def wrap_future(rclpy_future):
@@ -27,6 +28,34 @@ def wrap_future(rclpy_future):
     return aio_future
 
 
+def map_dexterous_hand(thumb_oppose, thumb_flex, index_flex, middle_flex, ring_flex, pinky_flex):
+    # 限制输入范围保护硬件
+    t_opp = max(0.0, min(1.0, thumb_oppose))
+    t_flx = max(0.0, min(1.0, thumb_flex))
+    i_flx = max(0.0, min(1.0, index_flex))
+    m_flx = max(0.0, min(1.0, middle_flex))
+    r_flx = max(0.0, min(1.0, ring_flex))
+    p_flx = max(0.0, min(1.0, pinky_flex))
+
+    thumb_mcp1 = 1.1 * t_opp 
+    thumb_mcp2 = 0.5 * t_flx
+    thumb_pip  = 1.0 * t_flx
+    thumb_dip  = 1.2 * (t_flx ** 1.2)
+
+    index_mcp = 1.7 * i_flx
+    index_dip = 1.6 * (i_flx ** 1.5)
+    middle_mcp = 1.7 * m_flx
+    middle_dip = 1.6 * (m_flx ** 1.5)
+    ring_mcp = 1.7 * r_flx
+    ring_dip = 1.6 * (r_flx ** 1.5)
+    pinky_mcp = 1.7 * p_flx
+    pinky_dip = 1.6 * (p_flx ** 1.5)
+
+    return [
+        thumb_mcp1, thumb_mcp2, thumb_pip, thumb_dip,
+        index_mcp, index_dip, middle_mcp, middle_dip,
+        ring_mcp, ring_dip, pinky_mcp, pinky_dip
+    ]
 class AdamuDualArmController(Node):
     def __init__(self):
         super().__init__('adamu_dual_arm_controller')
@@ -45,7 +74,11 @@ class AdamuDualArmController(Node):
         self._right_arm_client  = ActionClient(
             self, FollowJointTrajectory,
             '/right_arm_controller/follow_joint_trajectory')
-
+        self._left_hand_pub = self.create_publisher(
+            Float64MultiArray, '/left_hand_controller/commands', 10)
+        self._right_hand_pub = self.create_publisher(
+            Float64MultiArray, '/right_hand_controller/commands', 10)
+        
 
     async def wait_for_services(self, total_timeout_sec: float = 30.0) -> bool:
         self.get_logger().info(f'正在等待规划与控制服务上线... (超时{total_timeout_sec}秒)')
@@ -443,3 +476,33 @@ class AdamuDualArmController(Node):
         ok = all(results)
         self.get_logger().info('✅ 双臂同步直线完成' if ok else '❌ 双臂同步直线失败')
         return ok
+
+
+    async def set_bionic_hand(self, side: str, thumb_opp=0.0, thumb_flex=0.0, 
+                              index=0.0, middle=0.0, ring=0.0, pinky=0.0):
+        """
+        发送 6-DoF 高级仿生指令，自动映射到 12 个底层关节
+        """
+        # 调用工具函数获取 12 维数组
+        joint_positions = map_dexterous_hand(
+            thumb_opp, thumb_flex, index, middle, ring, pinky
+        )
+        
+        # 封装为 ROS 2 消息
+        msg = Float64MultiArray()
+        msg.data = joint_positions
+        
+        # 发布
+        if side == 'left':
+            self._left_hand_pub.publish(msg)
+        elif side == 'right':
+            self._right_hand_pub.publish(msg)
+        else:
+            self.get_logger().error("手部控制侧别错误！")
+            return False
+            
+        self.get_logger().info(f"🖐️ {side}手发送位置: T_opp={thumb_opp:.2f}, Flx=[{thumb_flex:.2f}, {index:.2f}, ...]")
+        
+        # 留出 1.0 秒让电机的纯位置控制走到目标点
+        await asyncio.sleep(1.0) 
+        return True

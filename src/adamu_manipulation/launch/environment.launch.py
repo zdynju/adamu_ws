@@ -360,5 +360,5 @@ def generate_launch_description():
         joint_state_broadcaster_spawner,
         delay_controllers,
         convenyor_node,
-        t1_master_node,
+        # t1_master_node,
     ])

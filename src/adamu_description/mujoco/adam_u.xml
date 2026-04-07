@@ -440,7 +440,6 @@
       </body>
     </body>
   </worldbody>
-
 <actuator>
     <position name="waistRoll"  joint="waistRoll"  kp="2000"  kv="800" forcerange="-110 110" ctrllimited="true" ctrlrange="-0.279 0.279"/>
     <position name="waistPitch" joint="waistPitch" kp="2000"  kv="600" forcerange="-110 110" ctrllimited="true" ctrlrange="-0.663 1.361"/>
@@ -458,22 +457,22 @@
     <position name="wristPitch_Left" joint="wristPitch_Left" kp="500" kv="50" forcerange="-6.4 6.4" ctrllimited="true" ctrlrange="-0.96 0.96"/>
     <position name="wristRoll_Left"  joint="wristRoll_Left"  kp="500" kv="50" forcerange="-6.4 6.4" ctrllimited="true" ctrlrange="-0.96 0.96"/>
 
-    <position name="L_thumb_MCP_joint1" joint="L_thumb_MCP_joint1" kp="150" kv="15" forcerange="-10 10" ctrllimited="true" ctrlrange="0 1.1"/>
-    <position name="L_thumb_MCP_joint2" joint="L_thumb_MCP_joint2" kp="150" kv="15" forcerange="-10 10" ctrllimited="true" ctrlrange="0 0.5"/>
-    <position name="L_thumb_PIP_joint"  joint="L_thumb_PIP_joint"  kp="150" kv="15" forcerange="-10 10" ctrllimited="true" ctrlrange="0 1"/>
-    <position name="L_thumb_DIP_joint"  joint="L_thumb_DIP_joint"  kp="150" kv="15" forcerange="-10 10" ctrllimited="true" ctrlrange="0 1.2"/>
+    <position name="L_thumb_MCP_joint1" joint="L_thumb_MCP_joint1" kp="40" kv="10" forcerange="-10 10" ctrllimited="true" ctrlrange="0 1.1"/>
+    <position name="L_thumb_MCP_joint2" joint="L_thumb_MCP_joint2" kp="40" kv="10" forcerange="-10 10" ctrllimited="true" ctrlrange="0 0.5"/>
+    <position name="L_thumb_PIP_joint"  joint="L_thumb_PIP_joint"  kp="40" kv="10" forcerange="-10 10" ctrllimited="true" ctrlrange="0 1"/>
+    <position name="L_thumb_DIP_joint"  joint="L_thumb_DIP_joint"  kp="40" kv="10" forcerange="-10 10" ctrllimited="true" ctrlrange="0 1.2"/>
     
-    <position name="L_index_MCP_joint"  joint="L_index_MCP_joint"  kp="150" kv="15" forcerange="-10 10" ctrllimited="true" ctrlrange="0 1.7"/>
-    <position name="L_index_DIP_joint"  joint="L_index_DIP_joint"  kp="150" kv="15" forcerange="-10 10" ctrllimited="true" ctrlrange="0 1.6"/>
+    <position name="L_index_MCP_joint"  joint="L_index_MCP_joint"  kp="40" kv="10 " forcerange="-10 10" ctrllimited="true" ctrlrange="0 1.7"/>
+    <position name="L_index_DIP_joint"  joint="L_index_DIP_joint"  kp="40" kv="10" forcerange="-10 10" ctrllimited="true" ctrlrange="0 1.6"/>
     
-    <position name="L_middle_MCP_joint" joint="L_middle_MCP_joint" kp="150" kv="15" forcerange="-10 10" ctrllimited="true" ctrlrange="0 1.7"/>
-    <position name="L_middle_DIP_joint" joint="L_middle_DIP_joint" kp="150" kv="15" forcerange="-10 10" ctrllimited="true" ctrlrange="0 1.6"/>
+    <position name="L_middle_MCP_joint" joint="L_middle_MCP_joint" kp="40" kv="10" forcerange="-10 10" ctrllimited="true" ctrlrange="0 1.7"/>
+    <position name="L_middle_DIP_joint" joint="L_middle_DIP_joint" kp="40" kv="10" forcerange="-10 10" ctrllimited="true" ctrlrange="0 1.6"/>
     
-    <position name="L_ring_MCP_joint"   joint="L_ring_MCP_joint"   kp="150" kv="15" forcerange="-10 10" ctrllimited="true" ctrlrange="0 1.7"/>
-    <position name="L_ring_DIP_joint"   joint="L_ring_DIP_joint"   kp="150" kv="15" forcerange="-10 10" ctrllimited="true" ctrlrange="0 1.6"/>
+    <position name="L_ring_MCP_joint"   joint="L_ring_MCP_joint"   kp="40" kv="10" forcerange="-10 10" ctrllimited="true" ctrlrange="0 1.7"/>
+    <position name="L_ring_DIP_joint"   joint="L_ring_DIP_joint"   kp="40" kv="10" forcerange="-10 10" ctrllimited="true" ctrlrange="0 1.6"/>
     
-    <position name="L_pinky_MCP_joint"  joint="L_pinky_MCP_joint"  kp="150" kv="15" forcerange="-10 10" ctrllimited="true" ctrlrange="0 1.7"/>
-    <position name="L_pinky_DIP_joint"  joint="L_pinky_DIP_joint"  kp="150" kv="15" forcerange="-10 10" ctrllimited="true" ctrlrange="0 1.6"/>
+    <position name="L_pinky_MCP_joint"  joint="L_pinky_MCP_joint"  kp="40" kv="10" forcerange="-10 10" ctrllimited="true" ctrlrange="0 1.7"/>
+    <position name="L_pinky_DIP_joint"  joint="L_pinky_DIP_joint"  kp="40" kv="10" forcerange="-10 10" ctrllimited="true" ctrlrange="0 1.6"/>
 
     <position name="shoulderPitch_Right" joint="shoulderPitch_Right" kp="800" kv="80" forcerange="-65 65" ctrllimited="true" ctrlrange="-3.613 2.042"/>
     <position name="shoulderRoll_Right"  joint="shoulderRoll_Right"  kp="800" kv="80" forcerange="-65 65" ctrllimited="true" ctrlrange="-2.793 0.628"/>
@@ -484,23 +483,23 @@
     <position name="wristPitch_Right" joint="wristPitch_Right" kp="500" kv="50" forcerange="-6.4 6.4" ctrllimited="true" ctrlrange="-0.96 0.96"/>
     <position name="wristRoll_Right"  joint="wristRoll_Right"  kp="500" kv="50" forcerange="-6.4 6.4" ctrllimited="true" ctrlrange="-0.96 0.96"/>
 
-    <position name="R_thumb_MCP_joint1" joint="R_thumb_MCP_joint1" kp="150" kv="15" forcerange="-10 10" ctrllimited="true" ctrlrange="0 1.1"/>
-    <position name="R_thumb_MCP_joint2" joint="R_thumb_MCP_joint2" kp="150" kv="15" forcerange="-10 10" ctrllimited="true" ctrlrange="0 0.5"/>
-    <position name="R_thumb_PIP_joint"  joint="R_thumb_PIP_joint"  kp="150" kv="15" forcerange="-10 10" ctrllimited="true" ctrlrange="0 1"/>
-    <position name="R_thumb_DIP_joint"  joint="R_thumb_DIP_joint"  kp="150" kv="15" forcerange="-10 10" ctrllimited="true" ctrlrange="0 1.2"/>
+    <position name="R_thumb_MCP_joint1" joint="R_thumb_MCP_joint1" kp="40" kv="10" forcerange="-10 10" ctrllimited="true" ctrlrange="0 1.1"/>
+    <position name="R_thumb_MCP_joint2" joint="R_thumb_MCP_joint2" kp="40" kv="10" forcerange="-10 10" ctrllimited="true" ctrlrange="0 0.5"/>
+    <position name="R_thumb_PIP_joint"  joint="R_thumb_PIP_joint"  kp="40" kv="10" forcerange="-10 10" ctrllimited="true" ctrlrange="0 1"/>
+    <position name="R_thumb_DIP_joint"  joint="R_thumb_DIP_joint"  kp="40" kv="10" forcerange="-10 10" ctrllimited="true" ctrlrange="0 1.2"/>
     
-    <position name="R_index_MCP_joint"  joint="R_index_MCP_joint"  kp="150" kv="15" forcerange="-10 10" ctrllimited="true" ctrlrange="0 1.7"/>
-    <position name="R_index_DIP_joint"  joint="R_index_DIP_joint"  kp="150" kv="15" forcerange="-10 10" ctrllimited="true" ctrlrange="0 1.6"/>
+    <position name="R_index_MCP_joint"  joint="R_index_MCP_joint"  kp="40" kv="10" forcerange="-10 10" ctrllimited="true" ctrlrange="0 1.7"/>
+    <position name="R_index_DIP_joint"  joint="R_index_DIP_joint"  kp="40" kv="10" forcerange="-10 10" ctrllimited="true" ctrlrange="0 1.6"/>
     
-    <position name="R_middle_MCP_joint" joint="R_middle_MCP_joint" kp="150" kv="15" forcerange="-10 10" ctrllimited="true" ctrlrange="0 1.7"/>
-    <position name="R_middle_DIP_joint" joint="R_middle_DIP_joint" kp="150" kv="15" forcerange="-10 10" ctrllimited="true" ctrlrange="0 1.6"/>
+    <position name="R_middle_MCP_joint" joint="R_middle_MCP_joint" kp="40" kv="10" forcerange="-10 10" ctrllimited="true" ctrlrange="0 1.7"/>
+    <position name="R_middle_DIP_joint" joint="R_middle_DIP_joint" kp="40" kv="10" forcerange="-10 10" ctrllimited="true" ctrlrange="0 1.6"/>
     
-    <position name="R_ring_MCP_joint"   joint="R_ring_MCP_joint"   kp="150" kv="15" forcerange="-10 10" ctrllimited="true" ctrlrange="0 1.7"/>
-    <position name="R_ring_DIP_joint"   joint="R_ring_DIP_joint"   kp="150" kv="15" forcerange="-10 10" ctrllimited="true" ctrlrange="0 1.6"/>
+    <position name="R_ring_MCP_joint"   joint="R_ring_MCP_joint"   kp="40" kv="10" forcerange="-10 10" ctrllimited="true" ctrlrange="0 1.7"/>
+    <position name="R_ring_DIP_joint"   joint="R_ring_DIP_joint"   kp="40" kv="10" forcerange="-10 10" ctrllimited="true" ctrlrange="0 1.6"/>
     
-    <position name="R_pinky_MCP_joint"  joint="R_pinky_MCP_joint"  kp="150" kv="15" forcerange="-10 10" ctrllimited="true" ctrlrange="0 1.7"/>
-    <position name="R_pinky_DIP_joint"  joint="R_pinky_DIP_joint"  kp="150" kv="15" forcerange="-10 10" ctrllimited="true" ctrlrange="0 1.6"/>
-  </actuator>
+    <position name="R_pinky_MCP_joint"  joint="R_pinky_MCP_joint"  kp="40" kv="10" forcerange="-10 10" ctrllimited="true" ctrlrange="0 1.7"/>
+    <position name="R_pinky_DIP_joint"  joint="R_pinky_DIP_joint"  kp="40" kv="10" forcerange="-10 10" ctrllimited="true" ctrlrange="0 1.6"/>
+</actuator>
 
   <sensor>
     <jointpos name="pos_waistRoll" joint="waistRoll" />

@@ -4,28 +4,29 @@ head:
   kinematics_solver_timeout: 0.0050000000000000001
 left_arm:
   kinematics_solver: pick_ik/PickIkPlugin
-  kinematics_solver_timeout: 0.05  # 增加超时时间
-  kinematics_solver_attempts: 3 # 增加尝试次数
-  mode: global
-  position_scale: 1.0
-  rotation_scale: 0.5           # 恢复旋转权重平衡
-  position_threshold: 0.001
-  orientation_threshold: 0.01   # 略微放宽姿态容差
-  cost_threshold: 0.001
-  minimal_displacement_weight: 0.001
-  gd_step_size: 0.0001
-right_arm:
-  kinematics_solver: pick_ik/PickIkPlugin
-  kinematics_solver_timeout: 0.05
+  kinematics_solver_timeout: 0.2         # 给予更充裕的全局搜索时间
   kinematics_solver_attempts: 3
   mode: global
   position_scale: 1.0
   rotation_scale: 0.5
-  position_threshold: 0.001
-  orientation_threshold: 0.01
+  position_threshold: 0.003              # 放宽至 3mm，大幅提升求解成功率
+  orientation_threshold: 0.015           # 放宽至约 0.85 度
   cost_threshold: 0.001
-  minimal_displacement_weight: 0.001
-  gd_step_size: 0.0001
+  minimal_displacement_weight: 0.0005    # 降低对大范围运动的惩罚，避免陷入局部死锁
+  gd_step_size: 0.005                    # 【核心】步长增大 50 倍，加快收敛速度
+
+right_arm:
+  kinematics_solver: pick_ik/PickIkPlugin
+  kinematics_solver_timeout: 0.2
+  kinematics_solver_attempts: 3
+  mode: global
+  position_scale: 1.0
+  rotation_scale: 0.5
+  position_threshold: 0.003
+  orientation_threshold: 0.015
+  cost_threshold: 0.001
+  minimal_displacement_weight: 0.0005
+  gd_step_size: 0.005
 
   # # KDL 求解器配置
 # left_arm:
